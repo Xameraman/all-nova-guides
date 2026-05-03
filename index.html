@@ -45,7 +45,7 @@ body{
   align-items:center;
 }
 
-/* ── HEADER (centered) ── */
+/* ── HEADER (centered, MIA logo stays) ── */
 .header{
   display:flex;
   flex-direction:column;
@@ -82,7 +82,7 @@ body{
   text-shadow:0 1px 4px rgba(0,0,0,.7);
 }
 
-/* ── BACK BUTTON ── */
+/* ── BACK BUTTON (now linking to official bio) ── */
 .back-btn{
   display:inline-flex;align-items:center;gap:6px;
   background:rgba(255,255,255,.04);
@@ -114,7 +114,7 @@ body{
   box-shadow:0 6px 22px rgba(255,215,0,.15);
 }
 
-/* Image + emoji fallback container (for cards using logos) */
+/* Image + emoji fallback container */
 .guide-icon-wrap{
   width:32px;height:32px;flex-shrink:0;
   position:relative;
@@ -129,7 +129,7 @@ body{
   font-size:22px;
   display:none; /* shown only if image fails */
 }
-/* Emoji-only (no image wrapper needed) */
+/* Emoji-only */
 .guide-emoji-only{
   font-size:24px;
   width:34px; text-align:center;
@@ -218,13 +218,13 @@ body{
     <p class="header-sub">Pick the guide you need – all in one place</p>
   </div>
 
-  <!-- BACK TO BIO -->
-  <a href="index.html" class="back-btn">← Back to Bio</a>
+  <!-- BACK TO BIO (fixed link) -->
+  <a href="https://xameraman.github.io/Official-Bio/" class="back-btn">← Back to Bio</a>
 
   <!-- GUIDE LIST -->
   <div class="links">
 
-    <!-- Import Guide (WRENCH EMOJI) -->
+    <!-- Import Guide -->
     <a href="https://xameraman.github.io/mia-install-guide-java-n-bedrock/" target="_blank" class="guide-card card-import" style="animation-delay:.10s">
       <span class="guide-emoji-only">🛠️</span>
       <div class="guide-body">
@@ -234,7 +234,7 @@ body{
       <span class="guide-arrow">›</span>
     </a>
 
-    <!-- MCPEDL (logo + emoji fallback) -->
+    <!-- MCPEDL -->
     <a href="https://xameraman.github.io/Mia-guide-for-Mcpedl/" target="_blank" class="guide-card card-mcpedl" style="animation-delay:.14s">
       <div class="guide-icon-wrap">
         <img src="mcpedl-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
