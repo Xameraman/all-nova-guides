@@ -114,7 +114,7 @@ body{
   box-shadow:0 6px 22px rgba(255,215,0,.15);
 }
 
-/* Image + emoji fallback container */
+/* Image + emoji fallback container (for cards using logos) */
 .guide-icon-wrap{
   width:32px;height:32px;flex-shrink:0;
   position:relative;
@@ -128,6 +128,12 @@ body{
 .guide-emoji{
   font-size:22px;
   display:none; /* shown only if image fails */
+}
+/* Emoji-only (no image wrapper needed) */
+.guide-emoji-only{
+  font-size:24px;
+  width:34px; text-align:center;
+  flex-shrink:0;
 }
 
 .guide-body{flex:1;min-width:0;}
@@ -184,6 +190,7 @@ body{
   .guide-icon-wrap{width:28px;height:28px;}
   .guide-img{width:28px;height:28px;}
   .guide-emoji{font-size:20px;}
+  .guide-emoji-only{font-size:20px;width:28px;}
   .guide-name{font-size:12px;}
   .guide-desc{font-size:9.5px;}
 }
@@ -203,7 +210,7 @@ body{
 
 <div class="page">
 
-  <!-- HEADER (centered) -->
+  <!-- HEADER (centered, MIA logo stays) -->
   <div class="header">
     <img src="mia-logo.jpg" alt="MIA" class="header-logo">
     <div class="header-badge">MINECRAFT ITEMS ACCELERATED</div>
@@ -217,12 +224,9 @@ body{
   <!-- GUIDE LIST -->
   <div class="links">
 
-    <!-- Import Guide (uses mia-logo.jpg) -->
+    <!-- Import Guide (WRENCH EMOJI) -->
     <a href="https://xameraman.github.io/mia-install-guide-java-n-bedrock/" target="_blank" class="guide-card card-import" style="animation-delay:.10s">
-      <div class="guide-icon-wrap">
-        <img src="mia-logo.jpg" alt="MIA" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-        <span class="guide-emoji">📥</span>
-      </div>
+      <span class="guide-emoji-only">🛠️</span>
       <div class="guide-body">
         <div class="guide-name">Java & Bedrock Import Guide</div>
         <div class="guide-desc">Full install guide for every file type</div>
@@ -230,7 +234,7 @@ body{
       <span class="guide-arrow">›</span>
     </a>
 
-    <!-- MCPEDL -->
+    <!-- MCPEDL (logo + emoji fallback) -->
     <a href="https://xameraman.github.io/Mia-guide-for-Mcpedl/" target="_blank" class="guide-card card-mcpedl" style="animation-delay:.14s">
       <div class="guide-icon-wrap">
         <img src="mcpedl-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
