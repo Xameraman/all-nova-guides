@@ -1,0 +1,419 @@
+<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIA — Guides</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --grass:#5D9E31; --darkgrass:#3A5F1E;
+  --dark:#080E1A; --card:#1A2435;
+  --light:#F0EBD8; --accent:#FFD700;
+  --tip:#47C96B; --mia:#5D9E31;
+  --purple-glow:#C678FF;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--dark);
+  font-family:'Nunito',sans-serif;
+  color:var(--light);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+#bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+
+.ground{position:fixed;bottom:0;left:0;right:0;z-index:1;pointer-events:none;}
+.ground-grass{
+  height:20px;
+  background:repeating-linear-gradient(90deg,#5D9E31 0,#5D9E31 15px,#4A8525 15px,#4A8525 30px,#6BAF38 30px,#6BAF38 45px,#4A8525 45px,#4A8525 60px);
+  border-top:3px solid #8FD44A;
+}
+.ground-dirt{
+  height:14px;
+  background:repeating-linear-gradient(90deg,#8B6340 0,#8B6340 15px,#7A5530 15px,#7A5530 30px,#9A7050 30px,#9A7050 45px,#7A5530 45px,#7A5530 60px);
+}
+
+.page{
+  position:relative;z-index:2;
+  max-width:680px;margin:0 auto;
+  padding:20px 16px 80px;
+  display:flex;flex-direction:column;
+  align-items:center;
+}
+
+/* ── HEADER (perfectly centered) ── */
+.header{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  width:100%;
+  margin-bottom:18px;
+  animation:fadeDown .6s ease both;
+}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
+.header-logo{
+  width:68px;height:68px;border-radius:14px;
+  object-fit:cover;margin-bottom:6px;
+  border:2px solid rgba(198,120,255,0.4);
+  box-shadow:0 0 18px rgba(155,79,219,0.4);
+  animation:bobble 3s ease-in-out infinite;
+}
+@keyframes bobble{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.header-badge{
+  display:inline-block;background:rgba(0,0,0,.5);
+  border:2px solid var(--accent);padding:2px 10px;
+  font-family:'Press Start 2P',monospace;font-size:5px;
+  color:var(--accent);letter-spacing:2px;margin-bottom:6px;
+}
+.header-title{
+  font-family:'Press Start 2P',monospace;
+  font-size:clamp(16px,4vw,22px);color:#fff;
+  text-shadow:3px 3px 0 #000,0 0 30px rgba(198,120,255,0.6);
+  letter-spacing:3px;margin-bottom:4px;
+}
+.header-sub{
+  font-size:11px;color:rgba(255,255,255,.6);
+  font-weight:700;max-width:360px;
+  text-shadow:0 1px 4px rgba(0,0,0,.7);
+}
+
+/* ── BACK BUTTON ── */
+.back-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.12);
+  color:rgba(255,255,255,.6);font-size:12px;
+  font-weight:700;padding:6px 14px;border-radius:8px;
+  text-decoration:none;margin-bottom:14px;
+  transition:background .2s,color .2s;
+}
+.back-btn:hover{background:rgba(255,255,255,.08);color:#fff;}
+
+/* ── SECTION ── */
+.section-title{
+  width:100%;text-align:center;
+  font-family:'Press Start 2P',monospace;font-size:6px;
+  color:rgba(255,255,255,.3);letter-spacing:2px;
+  margin:0 0 10px;
+  display:flex;align-items:center;gap:8px;
+  animation:fadeUp .5s ease both;
+}
+.section-title::before,.section-title::after{
+  content:'';flex:1;height:1px;background:rgba(255,255,255,.08);
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── LINK LIST ── */
+.links{width:100%;display:flex;flex-direction:column;gap:6px;}
+
+/* ── GUIDE CARD ── */
+.guide-card{
+  display:flex;align-items:center;gap:10px;
+  text-decoration:none;border-radius:10px;
+  padding:9px 14px;min-height:50px;
+  background:rgba(20,30,46,.8);backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.06);
+  transition:transform .2s,box-shadow .2s,border-color .2s;
+  animation:fadeUp .5s ease both;
+  box-shadow:0 3px 14px rgba(0,0,0,.35);
+}
+.guide-card:hover{
+  transform:translateY(-3px);
+  border-color:var(--accent);
+  box-shadow:0 6px 22px rgba(255,215,0,.15);
+}
+
+/* Image + emoji fallback container */
+.guide-icon-wrap{
+  width:32px;height:32px;flex-shrink:0;
+  position:relative;
+  display:flex;align-items:center;justify-content:center;
+}
+.guide-img{
+  width:32px;height:32px;object-fit:contain;
+  border-radius:6px;background:rgba(255,255,255,.05);
+  padding:2px;
+}
+.guide-emoji{
+  font-size:22px;
+  display:none; /* shown only if image fails */
+}
+
+.guide-body{flex:1;min-width:0;}
+.guide-name{
+  font-size:13px;font-weight:900;color:#fff;
+  margin-bottom:2px;text-shadow:0 1px 4px rgba(0,0,0,.6);
+}
+.guide-desc{
+  font-size:10px;color:rgba(255,255,255,.5);
+  line-height:1.4;font-weight:600;
+}
+.guide-arrow{
+  font-size:16px;color:rgba(255,255,255,.2);
+  flex-shrink:0;transition:color .2s,transform .2s;
+}
+.guide-card:hover .guide-arrow{color:rgba(255,255,255,.7);transform:translateX(3px);}
+
+/* Individual accent colors */
+.card-import{border-left:3px solid #60a5fa;}
+.card-mcpedl{border-left:3px solid #34d399;}
+.card-mirr{border-left:3px solid #fb923c;}
+.card-mf{border-left:3px solid #60a5fa;}
+.card-s2u{border-left:3px solid #f472b6;}
+.card-mod{border-left:3px solid #a78bfa;}
+.card-cf{border-left:3px solid #f59e0b;}
+.card-mega{border-left:3px solid #fbbf24;}
+.card-lvt{border-left:3px solid #00c6ff;}
+.card-pd{border-left:3px solid #818cf8;}
+
+/* FOOTER */
+.footer{
+  text-align:center;margin-top:22px;
+  animation:fadeUp .5s .8s ease both;
+}
+.footer-inner{
+  background:rgba(0,0,0,.7);backdrop-filter:blur(6px);
+  border:1px solid rgba(255,255,255,.08);border-radius:10px;
+  padding:12px 18px;display:inline-block;
+  box-shadow:0 6px 16px rgba(0,0,0,.4);
+}
+.footer-owner{
+  font-family:'Press Start 2P',monospace;font-size:6px;
+  color:rgba(255,255,255,.2);letter-spacing:2px;margin-bottom:4px;
+}
+.footer-owner span{color:var(--purple-glow);}
+.footer-copy{
+  font-size:10px;color:rgba(255,255,255,.2);font-weight:700;
+}
+.footer-copy span{color:#FF7070;}
+
+/* Mobile */
+@media (max-width:600px){
+  .guide-card{padding:8px 10px;gap:8px;}
+  .guide-icon-wrap{width:28px;height:28px;}
+  .guide-img{width:28px;height:28px;}
+  .guide-emoji{font-size:20px;}
+  .guide-name{font-size:12px;}
+  .guide-desc{font-size:9.5px;}
+}
+
+/* AI bubble fix */
+@media (max-width:600px){
+  .chatling-widget,.chtl-chat,#chatling-bubble{
+    max-width:92vw!important;max-height:70vh!important;
+    bottom:10px!important;right:10px!important;
+  }
+}
+</style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<div class="ground"><div class="ground-grass"></div><div class="ground-dirt"></div></div>
+
+<div class="page">
+
+  <!-- HEADER (centered) -->
+  <div class="header">
+    <img src="mia-logo.jpg" alt="MIA" class="header-logo">
+    <div class="header-badge">MINECRAFT ITEMS ACCELERATED</div>
+    <div class="header-title">GUIDES</div>
+    <p class="header-sub">Pick the guide you need – all in one place</p>
+  </div>
+
+  <!-- BACK TO BIO -->
+  <a href="index.html" class="back-btn">← Back to Bio</a>
+
+  <!-- GUIDE LIST -->
+  <div class="links">
+
+    <!-- Import Guide (now uses mia-logo.jpg) -->
+    <a href="https://xameraman.github.io/mia-install-guide-java-n-bedrock/" target="_blank" class="guide-card card-import" style="animation-delay:.10s">
+      <div class="guide-icon-wrap">
+        <img src="mia-logo.jpg" alt="MIA" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+        <span class="guide-emoji">📥</span>
+      </div>
+      <div class="guide-body">
+        <div class="guide-name">Java & Bedrock Import Guide</div>
+        <div class="guide-desc">Full install guide for every file type</div>
+      </div>
+      <span class="guide-arrow">›</span>
+    </a>
+
+    <!-- MCPEDL -->
+    <a href="https://xameraman.github.io/Mia-guide-for-Mcpedl/" target="_blank" class="guide-card card-mcpedl" style="animation-delay:.14s">
+      <div class="guide-icon-wrap">
+        <img src="logos/mcpedl-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+        <span class="guide-emoji">📱</span>
+      </div>
+      <div class="guide-body">
+        <div class="guide-name">MCPEDL Guide</div>
+        <div class="guide-desc">Download Bedrock add‑ons, maps & textures</div>
+      </div>
+      <span class="guide-arrow">›</span>
+    </a>
+
+    <!-- Mirrored.to -->
+    <a href="https://xameraman.github.io/Mia-official-guide-mirror.io/" target="_blank" class="guide-card card-mirr" style="animation-delay:.18s">
+      <div class="guide-icon-wrap">
+        <img src="logos/mirrored-to-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+        <span class="guide-emoji">🪞</span>
+      </div>
+      <div class="guide-body">
+        <div class="guide-name">Mirrored.to Guide</div>
+        <div class="guide-desc">16 hosts ranked — pick the safest</div>
+      </div>
+      <span class="guide-arrow">›</span>
+    </a>
+
+    <!-- MediaFire -->
+    <a href="https://xameraman.github.io/Mia-official-guide-mediafire/" target="_blank" class="guide-card card-mf" style="animation-delay:.22s">
+      <div class="guide-icon-wrap">
+        <img src="logos/mediafire-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+        <span class="guide-emoji">📁</span>
+      </div>
+      <div class="guide-body">
+        <div class="guide-name">MediaFire Guide</div>
+        <div class="guide-desc">Spot the real button, avoid fake ads</div>
+      </div>
+      <span class="guide-arrow">›</span>
+    </a>
+
+    <!-- Sub2Unlock -->
+    <a href="https://xameraman.github.io/Mia-Guide-for-Sub2unlock/" target="_blank" class="guide-card card-s2u" style="animation-delay:.26s">
+      <div class="guide-icon-wrap">
+        <img src="logos/sub2unlock-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+        <span class="guide-emoji">🔓</span>
+      </div>
+      <div class="guide-body">
+        <div class="guide-name">Sub2Unlock Guide</div>
+        <div class="guide-desc">Complete social tasks quickly & unlock</div>
+      </div>
+      <span class="guide-arrow">›</span>
+    </a>
+
+    <!-- Modrinth -->
+    <a href="https://xameraman.github.io/Mia-guide-for-modrinth/" target="_blank" class="guide-card card-mod" style="animation-delay:.30s">
+      <div class="guide-icon-wrap">
+        <img src="logos/modrinth-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+        <span class="guide-emoji">🟢</span>
+      </div>
+      <div class="guide-body">
+        <div class="guide-name">Modrinth Guide</div>
+        <div class="guide-desc">Download Java mods, packs & shaders</div>
+      </div>
+      <span class="guide-arrow">›</span>
+    </a>
+
+    <!-- CurseForge -->
+    <a href="https://xameraman.github.io/Mia-guide-for-curseforge/" target="_blank" class="guide-card card-cf" style="animation-delay:.34s">
+      <div class="guide-icon-wrap">
+        <img src="logos/curseforge-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+        <span class="guide-emoji">🔥</span>
+      </div>
+      <div class="guide-body">
+        <div class="guide-name">CurseForge Guide</div>
+        <div class="guide-desc">Java & Bedrock — pick your edition</div>
+      </div>
+      <span class="guide-arrow">›</span>
+    </a>
+
+    <!-- MEGA -->
+    <a href="https://xameraman.github.io/mia-guide-for-meganz/" target="_blank" class="guide-card card-mega" style="animation-delay:.38s">
+      <div class="guide-icon-wrap">
+        <img src="logos/mega-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+        <span class="guide-emoji">☁️</span>
+      </div>
+      <div class="guide-body">
+        <div class="guide-name">MEGA Guide</div>
+        <div class="guide-desc">Large files, transfer quotas explained</div>
+      </div>
+      <span class="guide-arrow">›</span>
+    </a>
+
+    <!-- Linkvertise -->
+    <a href="https://xameraman.github.io/Mia-guide-for-linkvertise/" target="_blank" class="guide-card card-lvt" style="animation-delay:.42s">
+      <div class="guide-icon-wrap">
+        <img src="logos/linkvertise-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+        <span class="guide-emoji">🔗</span>
+      </div>
+      <div class="guide-body">
+        <div class="guide-name">Linkvertise Guide</div>
+        <div class="guide-desc">Navigate ad walls & unlock safely</div>
+      </div>
+      <span class="guide-arrow">›</span>
+    </a>
+
+    <!-- Proton Drive -->
+    <a href="https://xameraman.github.io/Mia-guide-for-ProtonDrive/" target="_blank" class="guide-card card-pd" style="animation-delay:.46s">
+      <div class="guide-icon-wrap">
+        <img src="logos/proton-drive-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+        <span class="guide-emoji">🔐</span>
+      </div>
+      <div class="guide-body">
+        <div class="guide-name">Proton Drive Guide</div>
+        <div class="guide-desc">Encrypted, ad‑free downloads explained</div>
+      </div>
+      <span class="guide-arrow">›</span>
+    </a>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-inner">
+      <div class="footer-owner">OWNED BY <span>XAMERAMAN5022</span></div>
+      <div class="footer-copy">Always credit original pack creators <span>❤️</span></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ─── Animated canvas background ─── */
+(function(){
+  const canvas=document.getElementById('bg-canvas');
+  const ctx=canvas.getContext('2d');
+  let W,H;
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  resize();window.addEventListener('resize',resize);
+  const stars=[];for(let i=0;i<160;i++)stars.push({x:Math.random(),y:Math.random()*.85,r:Math.random()*1.4+.3,a:Math.random(),speed:.003+Math.random()*.006,phase:Math.random()*Math.PI*2});
+  const orbCols=['rgba(93,158,49,','rgba(71,201,107,','rgba(198,120,255,','rgba(255,215,0,','rgba(88,101,242,'];
+  const orbs=[];for(let i=0;i<7;i++)orbs.push({x:Math.random(),y:Math.random(),r:60+Math.random()*120,col:orbCols[Math.floor(Math.random()*orbCols.length)],vx:(Math.random()-.5)*.00015,vy:(Math.random()-.5)*.00015,a:.04+Math.random()*.05});
+  const pixCols=['#5D9E31','#7DC940','#FFD700','#47C96B','#C678FF','#fff','#5865F2'];
+  const pixels=[];function spawnPx(){return{x:Math.random(),y:1.05,size:3+Math.random()*5,col:pixCols[Math.floor(Math.random()*7)],vx:(Math.random()-.5)*.0004,vy:-(0.0004+Math.random()*.0008),a:0,maxA:.4+Math.random()*.35,rot:Math.random()*360,rotV:(Math.random()-.5)*1.2};}
+  for(let i=0;i<28;i++)pixels.push(spawnPx());
+  let shooters=[];setInterval(()=>shooters.push({x:Math.random()*.6,y:Math.random()*.4,len:80+Math.random()*140,speed:.006+Math.random()*.008,progress:0,a:.7+Math.random()*.3,angle:Math.PI/5+(Math.random()-.5)*.3}),3200);
+  let t=0;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#06091A');g.addColorStop(.5,'#0A1628');g.addColorStop(1,'#0D2040');
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    for(const o of orbs){o.x+=o.vx;o.y+=o.vy;if(o.x<-.1)o.x=1.1;if(o.x>1.1)o.x=-.1;if(o.y<-.1)o.y=1.1;if(o.y>1.1)o.y=-.1;
+      const rg=ctx.createRadialGradient(o.x*W,o.y*H,0,o.x*W,o.y*H,o.r);rg.addColorStop(0,o.col+o.a+')');rg.addColorStop(1,o.col+'0)');
+      ctx.fillStyle=rg;ctx.beginPath();ctx.arc(o.x*W,o.y*H,o.r,0,Math.PI*2);ctx.fill();}
+    for(const s of stars){const p=.4+.6*(.5+.5*Math.sin(t*s.speed+s.phase));ctx.globalAlpha=s.a*p;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(s.x*W,s.y*H,s.r*(.8+.3*p),0,Math.PI*2);ctx.fill();}ctx.globalAlpha=1;
+    shooters=shooters.filter(s=>s.progress<1.3);
+    for(const s of shooters){s.progress+=s.speed;
+      const sx=s.x*W+Math.cos(s.angle)*s.progress*s.len*3,sy=s.y*H+Math.sin(s.angle)*s.progress*s.len*3;
+      const ex=sx-Math.cos(s.angle)*s.len,ey=sy-Math.sin(s.angle)*s.len;
+      const fade=s.progress>.8?1-(s.progress-.8)/.5:1;
+      const lg=ctx.createLinearGradient(ex,ey,sx,sy);lg.addColorStop(0,'rgba(255,255,255,0)');lg.addColorStop(1,`rgba(255,255,255,${s.a*fade})`);
+      ctx.strokeStyle=lg;ctx.lineWidth=1.5;ctx.globalAlpha=fade;ctx.beginPath();ctx.moveTo(ex,ey);ctx.lineTo(sx,sy);ctx.stroke();ctx.globalAlpha=1;}
+    for(let i=0;i<pixels.length;i++){const p=pixels[i];p.x+=p.vx;p.y+=p.vy;p.rot+=p.rotV;p.a=Math.min(p.maxA,p.a+.008);if(p.y<-.05){pixels[i]=spawnPx();continue;}
+      ctx.save();ctx.translate(p.x*W,p.y*H);ctx.rotate(p.rot*Math.PI/180);ctx.globalAlpha=p.a;ctx.fillStyle=p.col;ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size);ctx.restore();}
+    ctx.globalAlpha=1;t+=.6;requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+
+<!-- MIA AI Assistant -->
+<script> window.chtlConfig = { chatbotId: "7411237892" } </script>
+<script async data-id="7411237892" id="chtl-script" type="text/javascript" src="https://chatling.ai/js/embed.js"></script>
+</body>
+</html>
