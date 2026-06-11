@@ -1,1014 +1,874 @@
-<html>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-<title>MIA — Guides</title>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<style>
-:root {
-  --grass:#5D9E31; --darkgrass:#3A5F1E;
-  --dark:#080E1A; --card:#1A2435;
-  --light:#F0EBD8; --accent:#FFD700;
-  --tip:#47C96B; --mia:#5D9E31;
-  --purple-glow:#C678FF;
-}
-*{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{
-  background:var(--dark);
-  font-family:'Nunito',sans-serif;
-  color:var(--light);
-  min-height:100vh;
-  overflow-x:hidden;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOVA — Guides</title>
+    <meta name="description" content="NOVA official guides for downloading from various platforms. Pick the guide you need — all in one place.">
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <style>
+        :root {
+            --bg: #0d1b2a;
+            --bg2: #12253a;
+            --card: #152233;
+            --card2: #1a2f47;
+            --text: #e8e8ff;
+            --muted: #8b9bb2;
+            --border: #23415f;
+            --accent: #00e5ff;
+            --gold: #ffd700;
+            --purple: #9b59b6;
+            --green: #2ecc71;
+            --red: #e74c3c;
+            --shadow: 0 10px 30px rgba(0,0,0,.28);
+        }
 
-#bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+        [data-theme="light"] {
+            --bg: #eef4fb;
+            --bg2: #e2ebf5;
+            --card: #ffffff;
+            --card2: #f7fbff;
+            --text: #18283b;
+            --muted: #5b6f88;
+            --border: #c8d6e4;
+            --shadow: 0 10px 30px rgba(20,40,60,.12);
+        }
 
-.ground{position:fixed;bottom:0;left:0;right:0;z-index:1;pointer-events:none;}
-.ground-grass{
-  height:20px;
-  background:repeating-linear-gradient(90deg,#5D9E31 0,#5D9E31 15px,#4A8525 15px,#4A8525 30px,#6BAF38 30px,#6BAF38 45px,#4A8525 45px,#4A8525 60px);
-  border-top:3px solid #8FD44A;
-}
-.ground-dirt{
-  height:14px;
-  background:repeating-linear-gradient(90deg,#8B6340 0,#8B6340 15px,#7A5530 15px,#7A5530 30px,#9A7050 30px,#9A7050 45px,#7A5530 45px,#7A5530 60px);
-}
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            background: radial-gradient(circle at top, rgba(0,229,255,.08), transparent 38%),
+                        linear-gradient(180deg, var(--bg2), var(--bg));
+            color: var(--text);
+            font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
 
-.page{
-  position:relative;z-index:2;
-  max-width:680px;margin:0 auto;
-  padding:20px 16px 80px;
-  display:flex;flex-direction:column;
-  align-items:center;
-}
+        a { color: inherit; }
 
-/* ── HEADER (centered, MIA logo stays) ── */
-.header{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  text-align:center;
-  width:100%;
-  margin-bottom:18px;
-  animation:fadeDown .6s ease both;
-}
-@keyframes fadeDown{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
-.header-logo{
-  width:68px;height:68px;border-radius:14px;
-  object-fit:cover;margin-bottom:6px;
-  border:2px solid rgba(198,120,255,0.4);
-  box-shadow:0 0 18px rgba(155,79,219,0.4);
-  animation:bobble 3s ease-in-out infinite;
-}
-@keyframes bobble{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-.header-badge{
-  display:inline-block;background:rgba(0,0,0,.5);
-  border:2px solid var(--accent);padding:2px 10px;
-  font-family:'Press Start 2P',monospace;font-size:5px;
-  color:var(--accent);letter-spacing:2px;margin-bottom:6px;
-}
-.header-title{
-  font-family:'Press Start 2P',monospace;
-  font-size:clamp(16px,4vw,22px);color:#fff;
-  text-shadow:3px 3px 0 #000,0 0 30px rgba(198,120,255,0.6);
-  letter-spacing:3px;margin-bottom:4px;
-}
-.header-sub{
-  font-size:11px;color:rgba(255,255,255,.6);
-  font-weight:700;max-width:360px;
-  text-shadow:0 1px 4px rgba(0,0,0,.7);
-}
+        .page {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 20px 16px 80px;
+            position: relative;
+            z-index: 2;
+        }
 
-/* ── BACK BUTTON (now linking to official bio) ── */
-.back-btn{
-  display:inline-flex;align-items:center;gap:6px;
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.12);
-  color:rgba(255,255,255,.6);font-size:12px;
-  font-weight:700;padding:6px 14px;border-radius:8px;
-  text-decoration:none;margin-bottom:14px;
-  transition:background .2s,color .2s;
-}
-.back-btn:hover{background:rgba(255,255,255,.08);color:#fff;}
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(10px);
+            background: color-mix(in srgb, var(--bg2) 85%, transparent);
+            border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
 
-/* ── LINK LIST ── */
-.links{width:100%;display:flex;flex-direction:column;gap:6px;}
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+        .brand img {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            object-fit: cover;
+            border: 1px solid var(--border);
+            box-shadow: 0 0 0 3px rgba(255,255,255,.03);
+            flex-shrink: 0;
+        }
+        .brand-text { min-width: 0; }
+        .brand-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: .4px;
+            line-height: 1.15;
+        }
+        .brand-sub {
+            margin-top: 3px;
+            font-size: .82rem;
+            color: var(--muted);
+            line-height: 1.3;
+        }
 
-/* ── GUIDE CARD ── */
-.guide-card{
-  display:flex;align-items:center;gap:10px;
-  text-decoration:none;border-radius:10px;
-  padding:9px 14px;min-height:50px;
-  background:rgba(20,30,46,.8);backdrop-filter:blur(8px);
-  border:1px solid rgba(255,255,255,.06);
-  transition:transform .2s,box-shadow .2s,border-color .2s;
-  animation:fadeUp .5s ease both;
-  box-shadow:0 3px 14px rgba(0,0,0,.35);
-}
-.guide-card:hover{
-  transform:translateY(-3px);
-  border-color:var(--accent);
-  box-shadow:0 6px 22px rgba(255,215,0,.15);
-}
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
 
-/* Image + emoji fallback container */
-.guide-icon-wrap{
-  width:32px;height:32px;flex-shrink:0;
-  position:relative;
-  display:flex;align-items:center;justify-content:center;
-}
-.guide-img{
-  width:32px;height:32px;object-fit:contain;
-  border-radius:6px;background:rgba(255,255,255,.05);
-  padding:2px;
-}
-.guide-emoji{
-  font-size:22px;
-  display:none; /* shown only if image fails */
-}
-/* Emoji-only */
-.guide-emoji-only{
-  font-size:24px;
-  width:34px; text-align:center;
-  flex-shrink:0;
-}
+        .btn {
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            text-decoration: none;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: .88rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform .15s ease, border-color .15s ease, opacity .15s ease, background .15s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow);
+            font-family: inherit;
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+            border-color: var(--accent);
+        }
+        .btn.primary {
+            background: linear-gradient(135deg, var(--accent), var(--gold));
+            color: #07111e;
+            border-color: transparent;
+        }
 
-.guide-body{flex:1;min-width:0;}
-.guide-name{
-  font-size:13px;font-weight:900;color:#fff;
-  margin-bottom:2px;text-shadow:0 1px 4px rgba(0,0,0,.6);
-}
-.guide-desc{
-  font-size:10px;color:rgba(255,255,255,.5);
-  line-height:1.4;font-weight:600;
-}
-.guide-arrow{
-  font-size:16px;color:rgba(255,255,255,.2);
-  flex-shrink:0;transition:color .2s,transform .2s;
-}
-.guide-card:hover .guide-arrow{color:rgba(255,255,255,.7);transform:translateX(3px);}
+        .hero {
+            border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+            background: linear-gradient(180deg, color-mix(in srgb, var(--card2) 70%, transparent), var(--card));
+            border-radius: 22px;
+            box-shadow: var(--shadow);
+            padding: 26px;
+            margin-bottom: 18px;
+            text-align: center;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: .78rem;
+            font-weight: 800;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--gold);
+            background: rgba(255,215,0,.08);
+            border: 1px solid rgba(255,215,0,.22);
+            padding: 7px 12px;
+            border-radius: 999px;
+            margin-bottom: 12px;
+        }
+        .hero h1 {
+            font-size: clamp(1.5rem,4vw,2.4rem);
+            line-height: 1.1;
+            margin-bottom: 10px;
+        }
+        .hero p {
+            max-width: 500px;
+            margin: 0 auto;
+            color: var(--muted);
+            line-height: 1.7;
+            font-size: .98rem;
+        }
 
-/* Individual accent colors */
-.card-import{border-left:3px solid #60a5fa;}
-.card-mcpedl{border-left:3px solid #34d399;}
-.card-mirr{border-left:3px solid #fb923c;}
-.card-urlspay{border-left:3px solid #f97316;}
-.card-mf{border-left:3px solid #60a5fa;}
-.card-s2u{border-left:3px solid #f472b6;}
-.card-mod{border-left:3px solid #a78bfa;}
-.card-cf{border-left:3px solid #f59e0b;}
-.card-mega{border-left:3px solid #fbbf24;}
-.card-lvt{border-left:3px solid #00c6ff;}
-.card-pd{border-left:3px solid #818cf8;}
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 14px;
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-size: .85rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.2s;
+            box-shadow: var(--shadow);
+            background: var(--card);
+        }
+        .back-link:hover {
+            background: rgba(255,255,255,.05);
+            color: var(--text);
+            border-color: var(--accent);
+        }
 
-/* FOOTER */
-.footer{
-  text-align:center;margin-top:22px;
-  animation:fadeUp .5s .8s ease both;
-}
-.footer-inner{
-  background:rgba(0,0,0,.7);backdrop-filter:blur(6px);
-  border:1px solid rgba(255,255,255,.08);border-radius:10px;
-  padding:12px 18px;display:inline-block;
-  box-shadow:0 6px 16px rgba(0,0,0,.4);
-}
-.footer-owner{
-  font-family:'Press Start 2P',monospace;font-size:6px;
-  color:rgba(255,255,255,.2);letter-spacing:2px;margin-bottom:4px;
-}
-.footer-owner span{color:var(--purple-glow);}
-.footer-copy{
-  font-size:10px;color:rgba(255,255,255,.2);font-weight:700;
-}
-.footer-copy span{color:#FF7070;}
+        .links {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
 
-/* Mobile */
-@media (max-width:600px){
-  .guide-card{padding:8px 10px;gap:8px;}
-  .guide-icon-wrap{width:28px;height:28px;}
-  .guide-img{width:28px;height:28px;}
-  .guide-emoji{font-size:20px;}
-  .guide-emoji-only{font-size:20px;width:28px;}
-  .guide-name{font-size:12px;}
-  .guide-desc{font-size:9.5px;}
-}
+        .guide-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            border-radius: 14px;
+            padding: 14px 16px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            transition: transform .2s, border-color .2s, box-shadow .2s;
+            animation: fadeUp .5s ease both;
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .guide-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent);
+            box-shadow: 0 12px 30px rgba(0,229,255,.15);
+        }
 
-/* ── MIA WIDGET CSS ── */
-#mia-widget-btn{
-  position:fixed; bottom:24px; right:24px; z-index:99999;
-  width:58px; height:58px; border-radius:50%;
-  background:linear-gradient(135deg,#9B4FDB,#5865F2);
-  border:none; cursor:pointer;
-  box-shadow:0 4px 20px rgba(155,79,219,0.5);
-  display:flex; align-items:center; justify-content:center;
-  font-size:24px; line-height:1;
-  transition:transform .2s,box-shadow .2s;
-  animation:mia-pulse-ring 2.5s ease-in-out infinite;
-}
-@keyframes mia-pulse-ring{0%,100%{box-shadow:0 4px 20px rgba(155,79,219,0.5);}50%{box-shadow:0 4px 32px rgba(155,79,219,0.9),0 0 0 8px rgba(155,79,219,0.15);}}
-#mia-widget-btn:hover{transform:scale(1.1);}
-#mia-widget-panel{
-  position:fixed; bottom:94px; right:24px; z-index:99998;
-  width:340px; max-width:calc(100vw - 48px);
-  background:rgba(12,18,32,0.97);
-  border:1.5px solid rgba(155,79,219,0.4);
-  border-radius:16px;
-  box-shadow:0 16px 48px rgba(0,0,0,0.6),0 0 30px rgba(155,79,219,0.15);
-  display:flex; flex-direction:column;
-  transform:scale(0.9) translateY(16px);
-  opacity:0; pointer-events:none;
-  transition:all 0.25s cubic-bezier(.4,0,.2,1);
-  overflow:hidden; max-height:520px;
-}
-#mia-widget-panel.mia-open{transform:scale(1) translateY(0);opacity:1;pointer-events:all;}
-#mia-panel-header{
-  background:linear-gradient(135deg,rgba(155,79,219,0.25),rgba(88,101,242,0.2));
-  padding:14px 16px; display:flex; align-items:center; gap:10px;
-  border-bottom:1px solid rgba(255,255,255,0.07); flex-shrink:0;
-}
-#mia-avatar{
-  width:36px; height:36px; border-radius:50%; overflow:hidden;
-  flex-shrink:0; box-shadow:0 0 12px rgba(155,79,219,0.5);
-}
-#mia-avatar img{width:100%;height:100%;object-fit:cover;}
-#mia-panel-title{font-weight:900;font-size:14px;color:#fff;line-height:1.2;}
-#mia-panel-sub{font-size:11px;color:rgba(255,255,255,0.45);margin-top:2px;}
-#mia-online-dot{
-  width:8px; height:8px; border-radius:50%;
-  background:#47C96B; margin-left:auto; flex-shrink:0;
-  box-shadow:0 0 6px #47C96B;
-  animation:mia-blink 2s ease-in-out infinite;
-}
-@keyframes mia-blink{0%,100%{opacity:1}50%{opacity:0.4}}
-#mia-messages{
-  flex:1; overflow-y:auto; padding:14px 14px 8px;
-  display:flex; flex-direction:column; gap:10px;
-  font-family:'Nunito',sans-serif;
-  scrollbar-width:thin; scrollbar-color:rgba(155,79,219,0.3) transparent;
-}
-#mia-messages::-webkit-scrollbar{width:4px;}
-#mia-messages::-webkit-scrollbar-track{background:transparent;}
-#mia-messages::-webkit-scrollbar-thumb{background:rgba(155,79,219,0.3);border-radius:2px;}
-.mia-msg{
-  max-width:85%; padding:10px 13px; border-radius:12px;
-  font-size:13.5px; line-height:1.65; animation:mia-pop .2s ease;
-  word-break:break-word;
-}
-@keyframes mia-pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-.mia-msg.user{
-  align-self:flex-end;
-  background:linear-gradient(135deg,#9B4FDB,#5865F2);
-  color:#fff; border-bottom-right-radius:4px;
-}
-.mia-msg.bot{
-  align-self:flex-start;
-  background:rgba(255,255,255,0.06);
-  border:1px solid rgba(255,255,255,0.08);
-  color:#E0EAF0; border-bottom-left-radius:4px;
-}
-.mia-msg.bot strong{color:#FFD700;}
-.mia-msg.bot em{color:#47C96B;font-style:normal;}
-.mia-msg.bot code{background:rgba(0,0,0,0.4);padding:1px 5px;border-radius:3px;font-size:12px;color:#FFD700;}
-.mia-typing{
-  align-self:flex-start;
-  background:rgba(255,255,255,0.06);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:12px; border-bottom-left-radius:4px;
-  padding:10px 14px; display:flex; gap:5px; align-items:center;
-}
-.mia-dot{
-  width:7px; height:7px; border-radius:50%;
-  background:rgba(155,79,219,0.8);
-  animation:mia-bounce .9s ease-in-out infinite;
-}
-.mia-dot:nth-child(2){animation-delay:.15s;}
-.mia-dot:nth-child(3){animation-delay:.3s;}
-@keyframes mia-bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
-#mia-input-row{
-  display:flex; gap:8px; padding:10px 12px;
-  border-top:1px solid rgba(255,255,255,0.07);
-  background:rgba(0,0,0,0.2); flex-shrink:0;
-}
-#mia-input{
-  flex:1; background:rgba(255,255,255,0.06);
-  border:1.5px solid rgba(255,255,255,0.1);
-  border-radius:10px; padding:9px 13px;
-  color:#fff; font-size:13px; font-family:'Nunito',sans-serif;
-  outline:none; resize:none; max-height:80px; overflow-y:auto;
-  transition:border-color .2s;
-}
-#mia-input:focus{border-color:rgba(155,79,219,0.6);}
-#mia-input::placeholder{color:rgba(255,255,255,0.3);}
-#mia-input:disabled{opacity:0.5;cursor:not-allowed;}
-#mia-send{
-  width:38px; height:38px; border-radius:10px;
-  background:linear-gradient(135deg,#9B4FDB,#5865F2);
-  border:none; cursor:pointer; color:#fff; font-size:17px;
-  display:flex; align-items:center; justify-content:center;
-  transition:transform .15s,opacity .15s; flex-shrink:0;
-  align-self:flex-end;
-}
-#mia-send:hover:not(:disabled){transform:scale(1.08);}
-#mia-send:disabled{opacity:0.4;cursor:not-allowed;}
-#mia-footer-note{
-  text-align:center; font-size:10px;
-  color:rgba(255,255,255,0.2); padding:4px 0 8px;
-  font-family:'Nunito',sans-serif; flex-shrink:0;
-}
-</style>
+        .guide-icon-wrap {
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .guide-img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            border-radius: 8px;
+            background: rgba(255,255,255,.05);
+            padding: 4px;
+        }
+        .guide-emoji {
+            font-size: 22px;
+            display: none;
+        }
+        .guide-emoji-only {
+            font-size: 24px;
+            width: 40px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .guide-body {
+            flex: 1;
+            min-width: 0;
+        }
+        .guide-name {
+            font-size: .95rem;
+            font-weight: 900;
+            color: var(--text);
+            margin-bottom: 2px;
+        }
+        .guide-desc {
+            font-size: .82rem;
+            color: var(--muted);
+            line-height: 1.4;
+        }
+        .guide-arrow {
+            font-size: 18px;
+            color: var(--muted);
+            flex-shrink: 0;
+            transition: color .2s, transform .2s;
+        }
+        .guide-card:hover .guide-arrow {
+            color: var(--accent);
+            transform: translateX(3px);
+        }
+
+        /* Accent colors for cards */
+        .card-import { border-left: 3px solid #60a5fa; }
+        .card-mcpedl { border-left: 3px solid #34d399; }
+        .card-mirr { border-left: 3px solid #fb923c; }
+        .card-urlspay { border-left: 3px solid #f97316; }
+        .card-mf { border-left: 3px solid #60a5fa; }
+        .card-s2u { border-left: 3px solid #f472b6; }
+        .card-mod { border-left: 3px solid #a78bfa; }
+        .card-cf { border-left: 3px solid #f59e0b; }
+        .card-mega { border-left: 3px solid #fbbf24; }
+        .card-lvt { border-left: 3px solid #00c6ff; }
+        .card-pd { border-left: 3px solid #818cf8; }
+        .card-all { border-left: 3px solid var(--gold); }
+
+        .footer {
+            margin-top: 24px;
+            text-align: center;
+            color: var(--muted);
+            font-size: .85rem;
+            line-height: 1.7;
+        }
+        .footer strong {
+            color: var(--text);
+        }
+
+        /* Floating link to NOVA Library */
+        .floating-link {
+            position: fixed;
+            left: 18px;
+            bottom: 18px;
+            z-index: 60;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 14px;
+            border-radius: 999px;
+            text-decoration: none;
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            color: #09111d;
+            font-weight: 900;
+            box-shadow: var(--shadow);
+            border: none;
+            font-size: .85rem;
+        }
+        .floating-link img {
+            width: 18px;
+            height: 18px;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+
+        #discord-live-badge {
+            position: fixed;
+            bottom: 22px;
+            left: 50%;
+            z-index: 61;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg,#5865F2,#4752C4);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 24px;
+            font-size: .78rem;
+            font-weight: 700;
+            box-shadow: 0 4px 18px rgba(88,101,242,.45);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            transition: transform .2s,box-shadow .2s;
+            white-space: nowrap;
+            font-family: inherit;
+        }
+        #discord-live-badge:hover {
+            transform: translateX(-50%) scale(1.05);
+            box-shadow: 0 6px 24px rgba(88,101,242,.7);
+        }
+        #discord-live-badge img {
+            width: 20px;
+            height: 20px;
+            border-radius: 5px;
+            object-fit: cover;
+            flex-shrink: 0;
+            box-shadow: 0 0 6px rgba(255,255,255,.3);
+        }
+
+        #nova-widget-btn {
+            position: fixed; bottom: 24px; right: 24px; z-index: 99999;
+            width: 58px; height: 58px; border-radius: 50%;
+            background: linear-gradient(135deg,#9B4FDB,#5865F2);
+            border: none; cursor: pointer;
+            box-shadow: 0 4px 20px rgba(155,79,219,0.5);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 28px; line-height: 1;
+            transition: transform .2s,box-shadow .2s;
+            animation: nova-pulse-ring 2.5s ease-in-out infinite;
+            color: #fff;
+        }
+        @keyframes nova-pulse-ring {
+            0%,100% { box-shadow: 0 4px 20px rgba(155,79,219,0.5); }
+            50% { box-shadow: 0 4px 32px rgba(155,79,219,0.9),0 0 0 8px rgba(155,79,219,0.15); }
+        }
+        #nova-widget-btn:hover { transform: scale(1.1); }
+        #nova-widget-panel {
+            position: fixed; bottom: 94px; right: 24px; z-index: 99998;
+            width: 340px; max-width: calc(100vw - 48px);
+            background: rgba(12,18,32,0.97);
+            border: 1.5px solid rgba(155,79,219,0.4);
+            border-radius: 16px;
+            box-shadow: 0 16px 48px rgba(0,0,0,0.6),0 0 30px rgba(155,79,219,0.15);
+            display: flex; flex-direction: column;
+            transform: scale(0.9) translateY(16px);
+            opacity: 0; pointer-events: none;
+            transition: all 0.25s cubic-bezier(.4,0,.2,1);
+            overflow: hidden; max-height: 520px;
+        }
+        #nova-widget-panel.nova-open {
+            transform: scale(1) translateY(0);
+            opacity: 1; pointer-events: all;
+        }
+        #nova-panel-header {
+            background: linear-gradient(135deg,rgba(155,79,219,0.25),rgba(88,101,242,0.2));
+            padding: 14px 16px; display: flex; align-items: center; gap: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.07); flex-shrink: 0;
+        }
+        #nova-avatar {
+            width: 36px; height: 36px; border-radius: 50%; overflow: hidden;
+            flex-shrink: 0; box-shadow: 0 0 12px rgba(155,79,219,0.5);
+            background: linear-gradient(135deg,#9B4FDB,#5865F2);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px;
+        }
+        #nova-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        #nova-panel-title { font-weight: 900; font-size: 14px; color: #fff; line-height: 1.2; }
+        #nova-panel-sub { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 2px; }
+        #nova-online-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: #47C96B; margin-left: auto; flex-shrink: 0;
+            box-shadow: 0 0 6px #47C96B;
+            animation: nova-blink 2s ease-in-out infinite;
+        }
+        @keyframes nova-blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+        #nova-messages {
+            flex: 1; overflow-y: auto; padding: 14px 14px 8px;
+            display: flex; flex-direction: column; gap: 10px;
+            font-family: 'Segoe UI',sans-serif;
+            scrollbar-width: thin; scrollbar-color: rgba(155,79,219,0.3) transparent;
+        }
+        #nova-messages::-webkit-scrollbar { width: 4px; }
+        #nova-messages::-webkit-scrollbar-track { background: transparent; }
+        #nova-messages::-webkit-scrollbar-thumb { background: rgba(155,79,219,0.3); border-radius: 2px; }
+        .nova-msg {
+            max-width: 85%; padding: 10px 13px; border-radius: 12px;
+            font-size: 13.5px; line-height: 1.65; animation: nova-pop .2s ease;
+            word-break: break-word;
+        }
+        @keyframes nova-pop { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+        .nova-msg.user {
+            align-self: flex-end;
+            background: linear-gradient(135deg,#9B4FDB,#5865F2);
+            color: #fff; border-bottom-right-radius: 4px;
+        }
+        .nova-msg.bot {
+            align-self: flex-start;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #E0EAF0; border-bottom-left-radius: 4px;
+        }
+        .nova-msg.bot strong { color: #FFD700; }
+        .nova-msg.bot em { color: #47C96B; font-style: normal; }
+        .nova-msg.bot code {
+            background: rgba(0,0,0,0.4);
+            padding: 1px 5px; border-radius: 3px;
+            font-size: 12px; color: #FFD700;
+        }
+        .nova-typing {
+            align-self: flex-start;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px; border-bottom-left-radius: 4px;
+            padding: 10px 14px; display: flex; gap: 5px; align-items: center;
+        }
+        .nova-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: rgba(155,79,219,0.8);
+            animation: nova-bounce .9s ease-in-out infinite;
+        }
+        .nova-dot:nth-child(2) { animation-delay: .15s; }
+        .nova-dot:nth-child(3) { animation-delay: .3s; }
+        @keyframes nova-bounce {
+            0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)}
+        }
+        #nova-input-row {
+            display: flex; gap: 8px; padding: 10px 12px;
+            border-top: 1px solid rgba(255,255,255,0.07);
+            background: rgba(0,0,0,0.2); flex-shrink: 0;
+        }
+        #nova-input {
+            flex: 1; background: rgba(255,255,255,0.06);
+            border: 1.5px solid rgba(255,255,255,0.1);
+            border-radius: 10px; padding: 9px 13px;
+            color: #fff; font-size: 13px; font-family: 'Segoe UI',sans-serif;
+            outline: none; resize: none; max-height: 80px; overflow-y: auto;
+            transition: border-color .2s;
+        }
+        #nova-input:focus { border-color: rgba(155,79,219,0.6); }
+        #nova-input::placeholder { color: rgba(255,255,255,0.3); }
+        #nova-input:disabled { opacity: 0.5; cursor: not-allowed; }
+        #nova-send {
+            width: 38px; height: 38px; border-radius: 10px;
+            background: linear-gradient(135deg,#9B4FDB,#5865F2);
+            border: none; cursor: pointer; color: #fff; font-size: 17px;
+            display: flex; align-items: center; justify-content: center;
+            transition: transform .15s,opacity .15s; flex-shrink: 0;
+            align-self: flex-end;
+        }
+        #nova-send:hover:not(:disabled) { transform: scale(1.08); }
+        #nova-send:disabled { opacity: 0.4; cursor: not-allowed; }
+        #nova-footer-note {
+            text-align: center; font-size: 10px;
+            color: rgba(255,255,255,0.2); padding: 4px 0 8px;
+            font-family: 'Segoe UI',sans-serif; flex-shrink: 0;
+        }
+        #nova-captcha-wrap {
+            padding: 12px; display: none; text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.07);
+            background: rgba(0,0,0,0.16);
+        }
+
+        @media (max-width: 600px) {
+            .page { padding: 12px; }
+            .hero { padding: 16px; border-radius: 18px; }
+            .guide-card { padding: 12px 14px; gap: 10px; }
+            .guide-icon-wrap, .guide-img, .guide-emoji-only { width: 34px; height: 34px; }
+            .floating-link { left: 10px; bottom: 14px; padding: 10px 12px; font-size: .78rem; }
+            #discord-live-badge { bottom: 14px; left: 50%; transform: translateX(-50%); font-size: .7rem; padding: 7px 12px; }
+            #nova-widget-btn { right: 10px; bottom: 14px; width: 50px; height: 50px; font-size: 24px; }
+            #nova-widget-panel { right: 10px; bottom: 78px; width: calc(100vw - 20px); }
+        }
+    </style>
 </head>
 <body>
-<canvas id="bg-canvas"></canvas>
-<div class="ground"><div class="ground-grass"></div><div class="ground-dirt"></div></div>
-
 <div class="page">
+    <header class="header">
+        <div class="brand">
+            <img src="https://i.ibb.co/cK60Sp0h/b41e6534d3e9.png" alt="NOVA icon" />
+            <div class="brand-text">
+                <div class="brand-title">NOVA</div>
+                <div class="brand-sub">Nexus Of Verified Assets</div>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="btn" id="themeBtn" type="button">🌙 Theme</button>
+            <a class="btn" href="https://nova-library.pages.dev/" target="_blank" rel="noopener noreferrer">📚 NOVA Library</a>
+            <a class="btn primary" href="https://discord.gg/ThgxvPtUjZ" target="_blank" rel="noopener noreferrer">💬 Join NOVA</a>
+        </div>
+    </header>
 
-  <!-- HEADER (centered, MIA logo stays) -->
-  <div class="header">
-    <img src="mia-logo.jpg" alt="MIA" class="header-logo">
-    <div class="header-badge">MINECRAFT ITEMS ACCELERATED</div>
-    <div class="header-title">GUIDES</div>
-    <p class="header-sub">Pick the guide you need – all in one place</p>
-  </div>
+    <section class="hero">
+        <div class="hero-badge">📚 NOVA GUIDES</div>
+        <h1>Download Guides</h1>
+        <p>Pick the guide you need — all in one place. Clean, verified instructions for every platform.</p>
+    </section>
 
-  <!-- BACK TO BIO (fixed link) -->
-  <a href="https://xameraman.github.io/Official-Bio/" class="back-btn">← Back to Bio</a>
-
-  <!-- GUIDE LIST -->
-  <div class="links">
-
-    <!-- Import Guide -->
-    <a href="https://xameraman.github.io/mia-install-guide-java-n-bedrock/" target="_blank" class="guide-card card-import" style="animation-delay:.10s">
-      <span class="guide-emoji-only">🛠️</span>
-      <div class="guide-body">
-        <div class="guide-name">Java & Bedrock Import Guide</div>
-        <div class="guide-desc">Full install guide for every file type</div>
-      </div>
-      <span class="guide-arrow">›</span>
+    <a class="back-link" href="https://nova-library.pages.dev/" target="_blank" rel="noopener noreferrer">
+        ← Back to NOVA Library
     </a>
 
-    <!-- MCPEDL -->
-    <a href="https://xameraman.github.io/Mia-guide-for-Mcpedl/" target="_blank" class="guide-card card-mcpedl" style="animation-delay:.14s">
-      <div class="guide-icon-wrap">
-        <img src="mcpedl-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-        <span class="guide-emoji">📱</span>
-      </div>
-      <div class="guide-body">
-        <div class="guide-name">MCPEDL Guide</div>
-        <div class="guide-desc">Download Bedrock add‑ons, maps & textures</div>
-      </div>
-      <span class="guide-arrow">›</span>
-    </a>
+    <div class="links">
+        <!-- Install Guide -->
+        <a href="https://xameraman.github.io/guide-for-java-and-bedrock/" target="_blank" class="guide-card card-import" style="animation-delay:.10s">
+            <span class="guide-emoji-only">🛠️</span>
+            <div class="guide-body">
+                <div class="guide-name">Java &amp; Bedrock Install Guide</div>
+                <div class="guide-desc">Full install guide for every file type</div>
+            </div>
+            <span class="guide-arrow">›</span>
+        </a>
 
-    <!-- Mirrored.to -->
-    <a href="https://xameraman.github.io/Mia-official-guide-mirror.to/" target="_blank" class="guide-card card-mirr" style="animation-delay:.18s">
-      <div class="guide-icon-wrap">
-        <img src="mirrored-to-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-        <span class="guide-emoji">🪞</span>
-      </div>
-      <div class="guide-body">
-        <div class="guide-name">Mirrored.to Guide</div>
-        <div class="guide-desc">16 hosts ranked — pick the safest</div>
-      </div>
-      <span class="guide-arrow">›</span>
-    </a>
+        <!-- MCPEDL -->
+        <a href="https://xameraman.github.io/guide-for-mcpedl/" target="_blank" class="guide-card card-mcpedl" style="animation-delay:.14s">
+            <div class="guide-icon-wrap">
+                <img src="mcpedl-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <span class="guide-emoji">📱</span>
+            </div>
+            <div class="guide-body">
+                <div class="guide-name">MCPEDL Guide</div>
+                <div class="guide-desc">Download Bedrock add‑ons, maps &amp; textures</div>
+            </div>
+            <span class="guide-arrow">›</span>
+        </a>
 
-    <!-- Urlspay -->
-    <a href="https://xameraman.github.io/Mia-guide-for-Urlspay/" target="_blank" class="guide-card card-urlspay" style="animation-delay:.22s">
-      <div class="guide-icon-wrap">
-        <img src="urlspay-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-        <span class="guide-emoji">🔗</span>
-      </div>
-      <div class="guide-body">
-        <div class="guide-name">Urlspay Guide</div>
-        <div class="guide-desc">Unlock links, skip timers & ads</div>
-      </div>
-      <span class="guide-arrow">›</span>
-    </a>
+        <!-- Mirrored.to -->
+        <a href="https://xameraman.github.io/guide-for-mirror.to/" target="_blank" class="guide-card card-mirr" style="animation-delay:.18s">
+            <div class="guide-icon-wrap">
+                <img src="mirrored-to-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <span class="guide-emoji">🪞</span>
+            </div>
+            <div class="guide-body">
+                <div class="guide-name">Mirrored.to Guide</div>
+                <div class="guide-desc">16 hosts ranked — pick the safest</div>
+            </div>
+            <span class="guide-arrow">›</span>
+        </a>
 
-    <!-- MediaFire -->
-    <a href="https://xameraman.github.io/Mia-official-guide-mediafire/" target="_blank" class="guide-card card-mf" style="animation-delay:.26s">
-      <div class="guide-icon-wrap">
-        <img src="mediafire-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-        <span class="guide-emoji">📁</span>
-      </div>
-      <div class="guide-body">
-        <div class="guide-name">MediaFire Guide</div>
-        <div class="guide-desc">Spot the real button, avoid fake ads</div>
-      </div>
-      <span class="guide-arrow">›</span>
-    </a>
+        <!-- Urlspay -->
+        <a href="https://xameraman.github.io/guide-for-urlspay/" target="_blank" class="guide-card card-urlspay" style="animation-delay:.22s">
+            <div class="guide-icon-wrap">
+                <img src="urlspay-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <span class="guide-emoji">🔗</span>
+            </div>
+            <div class="guide-body">
+                <div class="guide-name">Urlspay Guide</div>
+                <div class="guide-desc">Unlock links, skip timers &amp; ads</div>
+            </div>
+            <span class="guide-arrow">›</span>
+        </a>
 
-    <!-- Sub2Unlock -->
-    <a href="https://xameraman.github.io/Mia-Guide-for-Sub2unlock/" target="_blank" class="guide-card card-s2u" style="animation-delay:.30s">
-      <div class="guide-icon-wrap">
-        <img src="sub2unlock-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-        <span class="guide-emoji">🔓</span>
-      </div>
-      <div class="guide-body">
-        <div class="guide-name">Sub2Unlock Guide</div>
-        <div class="guide-desc">Complete social tasks quickly & unlock</div>
-      </div>
-      <span class="guide-arrow">›</span>
-    </a>
+        <!-- MediaFire -->
+        <a href="https://xameraman.github.io/guide-for-mediafire/" target="_blank" class="guide-card card-mf" style="animation-delay:.26s">
+            <div class="guide-icon-wrap">
+                <img src="mediafire-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <span class="guide-emoji">📁</span>
+            </div>
+            <div class="guide-body">
+                <div class="guide-name">MediaFire Guide</div>
+                <div class="guide-desc">Spot the real button, avoid fake ads</div>
+            </div>
+            <span class="guide-arrow">›</span>
+        </a>
 
-    <!-- Modrinth -->
-    <a href="https://xameraman.github.io/Mia-guide-for-modrinth/" target="_blank" class="guide-card card-mod" style="animation-delay:.34s">
-      <div class="guide-icon-wrap">
-        <img src="modrinth-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-        <span class="guide-emoji">🟢</span>
-      </div>
-      <div class="guide-body">
-        <div class="guide-name">Modrinth Guide</div>
-        <div class="guide-desc">Download Java mods, packs & shaders</div>
-      </div>
-      <span class="guide-arrow">›</span>
-    </a>
+        <!-- Sub2Unlock -->
+        <a href="https://xameraman.github.io/Guide-for-Sub2unlock/" target="_blank" class="guide-card card-s2u" style="animation-delay:.30s">
+            <div class="guide-icon-wrap">
+                <img src="sub2unlock-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <span class="guide-emoji">🔓</span>
+            </div>
+            <div class="guide-body">
+                <div class="guide-name">Sub2Unlock Guide</div>
+                <div class="guide-desc">Complete social tasks quickly &amp; unlock</div>
+            </div>
+            <span class="guide-arrow">›</span>
+        </a>
 
-    <!-- CurseForge -->
-    <a href="https://xameraman.github.io/Mia-guide-for-curseforge/" target="_blank" class="guide-card card-cf" style="animation-delay:.38s">
-      <div class="guide-icon-wrap">
-        <img src="curseforge-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-        <span class="guide-emoji">🔥</span>
-      </div>
-      <div class="guide-body">
-        <div class="guide-name">CurseForge Guide</div>
-        <div class="guide-desc">Java & Bedrock — pick your edition</div>
-      </div>
-      <span class="guide-arrow">›</span>
-    </a>
+        <!-- Modrinth -->
+        <a href="https://xameraman.github.io/guide-for-modrinth/" target="_blank" class="guide-card card-mod" style="animation-delay:.34s">
+            <div class="guide-icon-wrap">
+                <img src="modrinth-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <span class="guide-emoji">🟢</span>
+            </div>
+            <div class="guide-body">
+                <div class="guide-name">Modrinth Guide</div>
+                <div class="guide-desc">Download Java mods, packs &amp; shaders</div>
+            </div>
+            <span class="guide-arrow">›</span>
+        </a>
 
-    <!-- MEGA -->
-    <a href="https://xameraman.github.io/mia-guide-for-meganz/" target="_blank" class="guide-card card-mega" style="animation-delay:.42s">
-      <div class="guide-icon-wrap">
-        <img src="mega-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-        <span class="guide-emoji">☁️</span>
-      </div>
-      <div class="guide-body">
-        <div class="guide-name">MEGA Guide</div>
-        <div class="guide-desc">Large files, transfer quotas explained</div>
-      </div>
-      <span class="guide-arrow">›</span>
-    </a>
+        <!-- CurseForge -->
+        <a href="https://xameraman.github.io/guide-for-curseforge/" target="_blank" class="guide-card card-cf" style="animation-delay:.38s">
+            <div class="guide-icon-wrap">
+                <img src="curseforge-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <span class="guide-emoji">🔥</span>
+            </div>
+            <div class="guide-body">
+                <div class="guide-name">CurseForge Guide</div>
+                <div class="guide-desc">Java &amp; Bedrock — pick your edition</div>
+            </div>
+            <span class="guide-arrow">›</span>
+        </a>
 
-    <!-- Linkvertise -->
-    <a href="https://xameraman.github.io/Mia-guide-for-linkvertise/" target="_blank" class="guide-card card-lvt" style="animation-delay:.46s">
-      <div class="guide-icon-wrap">
-        <img src="linkvertise-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-        <span class="guide-emoji">🔗</span>
-      </div>
-      <div class="guide-body">
-        <div class="guide-name">Linkvertise Guide</div>
-        <div class="guide-desc">Navigate ad walls & unlock safely</div>
-      </div>
-      <span class="guide-arrow">›</span>
-    </a>
+        <!-- MEGA -->
+        <a href="https://xameraman.github.io/guide-for-meganz/" target="_blank" class="guide-card card-mega" style="animation-delay:.42s">
+            <div class="guide-icon-wrap">
+                <img src="mega-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <span class="guide-emoji">☁️</span>
+            </div>
+            <div class="guide-body">
+                <div class="guide-name">MEGA Guide</div>
+                <div class="guide-desc">Large files, transfer quotas explained</div>
+            </div>
+            <span class="guide-arrow">›</span>
+        </a>
 
-    <!-- Proton Drive -->
-    <a href="https://xameraman.github.io/Mia-guide-for-ProtonDrive/" target="_blank" class="guide-card card-pd" style="animation-delay:.50s">
-      <div class="guide-icon-wrap">
-        <img src="proton-drive-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-        <span class="guide-emoji">🔐</span>
-      </div>
-      <div class="guide-body">
-        <div class="guide-name">Proton Drive Guide</div>
-        <div class="guide-desc">Encrypted, ad‑free downloads explained</div>
-      </div>
-      <span class="guide-arrow">›</span>
-    </a>
+        <!-- Linkvertise -->
+        <a href="https://xameraman.github.io/guide-for-linkvertise/" target="_blank" class="guide-card card-lvt" style="animation-delay:.46s">
+            <div class="guide-icon-wrap">
+                <img src="linkvertise-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <span class="guide-emoji">🔗</span>
+            </div>
+            <div class="guide-body">
+                <div class="guide-name">Linkvertise Guide</div>
+                <div class="guide-desc">Navigate ad walls &amp; unlock safely</div>
+            </div>
+            <span class="guide-arrow">›</span>
+        </a>
 
-  </div>
+        <!-- Proton Drive -->
+        <a href="https://xameraman.github.io/guide-for-ProtonDrive/" target="_blank" class="guide-card card-pd" style="animation-delay:.50s">
+            <div class="guide-icon-wrap">
+                <img src="proton-drive-logo.png" alt="" class="guide-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <span class="guide-emoji">🔐</span>
+            </div>
+            <div class="guide-body">
+                <div class="guide-name">Proton Drive Guide</div>
+                <div class="guide-desc">Encrypted, ad‑free downloads explained</div>
+            </div>
+            <span class="guide-arrow">›</span>
+        </a>
 
-  <!-- FOOTER -->
-  <div class="footer">
-    <div class="footer-inner">
-      <div class="footer-owner">OWNED BY <span>XAMERAMAN5022</span></div>
-      <div class="footer-copy">Always credit original pack creators <span>❤️</span></div>
+        <!-- All Guides -->
+        <a href="https://xameraman.github.io/all-nova-guides/" target="_blank" class="guide-card card-all" style="animation-delay:.54s">
+            <span class="guide-emoji-only">🌐</span>
+            <div class="guide-body">
+                <div class="guide-name">All NOVA Guides</div>
+                <div class="guide-desc">Browse every guide in one place</div>
+            </div>
+            <span class="guide-arrow">›</span>
+        </a>
     </div>
-  </div>
 
+    <div class="footer">
+        <strong>NOVA — Nexus Of Verified Assets</strong><br />
+        Verified. Organized. Creator Respecting.<br />
+        Owned by Xameraman5022
+    </div>
 </div>
 
-<!-- ══════════════════ MIA ASSISTANT WIDGET ══════════════════ -->
-<button id="mia-widget-btn" title="Chat with MIA Assistant">🤖</button>
-<div id="mia-widget-panel">
-  <div id="mia-panel-header">
-    <div id="mia-avatar">
-      <img src="mia-logo.jpg" alt="MIA">
+<a class="floating-link" href="https://nova-library.pages.dev/" target="_blank" rel="noopener noreferrer" title="Open NOVA Library">
+    <img src="https://i.ibb.co/cK60Sp0h/b41e6534d3e9.png" alt="NOVA" />
+    NOVA Library
+</a>
+
+<button id="nova-widget-btn" title="Chat with NOVA Assistant">🤖</button>
+<div id="nova-widget-panel">
+    <div id="nova-panel-header">
+        <div id="nova-avatar">
+            <img src="https://i.ibb.co/cK60Sp0h/b41e6534d3e9.png" alt="NOVA">
+        </div>
+        <div>
+            <div id="nova-panel-title">NOVA Assistant</div>
+            <div id="nova-panel-sub">Nexus Of Verified Assets</div>
+        </div>
+        <div id="nova-online-dot"></div>
     </div>
-    <div>
-      <div id="mia-panel-title">MIA Assistant</div>
-      <div id="mia-panel-sub">Minecraft Items Accelerated</div>
+    <div id="nova-messages">
+        <div class="nova-msg bot">Hey! 👋 I'm <strong>NOVA Assistant</strong>. Ask me anything about <em>NOVA</em>, downloading, or installing — I'm here to help!</div>
     </div>
-    <div id="mia-online-dot"></div>
-  </div>
-  <div id="mia-messages">
-    <div class="mia-msg bot">Hey! 👋 I'm <strong>MIA Assistant</strong>. Ask me anything about <em>MIA</em>, Minecraft Bedrock, or anything else — I'm here to help!</div>
-  </div>
-  <!-- Cloudflare Turnstile – human verification -->
-  <div id="mia-captcha-wrap" style="padding:12px;display:none;text-align:center;">
-    <div class="cf-turnstile"
-         data-sitekey="0x4AAAAAADQ644b2jjSd7BsB"
-         data-callback="onCaptchaSuccess"
-         data-theme="dark"
-         data-size="flexible"
-         style="max-width:300px;margin:0 auto;">
+    <div id="nova-captcha-wrap">
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAADQ644b2jjSd7BsB" data-callback="onCaptchaSuccess" data-theme="dark" data-size="flexible" style="max-width:300px;margin:0 auto;"></div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.3);text-align:center;margin-top:6px;font-family:sans-serif;">Verify you're human to start chatting</div>
     </div>
-    <div style="font-size:11px;color:rgba(255,255,255,0.3);text-align:center;
-                margin-top:6px;font-family:sans-serif;">
-      Verify you're human to start chatting
+    <div id="nova-input-row">
+        <textarea id="nova-input" placeholder="Ask me anything..." rows="1"></textarea>
+        <button id="nova-send">➤</button>
     </div>
-  </div>
-  <div id="mia-input-row">
-    <textarea id="mia-input" placeholder="Ask me anything..." rows="1"></textarea>
-    <button id="mia-send">➤</button>
-  </div>
-  <div id="mia-footer-note">MIA Assistance</div>
+    <div id="nova-footer-note">NOVA Assistance</div>
 </div>
 
-<!-- ══════════════════ CANVAS BACKGROUND ══════════════════ -->
 <script>
-(function(){
-  const canvas=document.getElementById('bg-canvas');
-  const ctx=canvas.getContext('2d');
-  let W,H;
-  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
-  resize();window.addEventListener('resize',resize);
-  const stars=[];for(let i=0;i<160;i++)stars.push({x:Math.random(),y:Math.random()*.85,r:Math.random()*1.4+.3,a:Math.random(),speed:.003+Math.random()*.006,phase:Math.random()*Math.PI*2});
-  const orbCols=['rgba(93,158,49,','rgba(71,201,107,','rgba(198,120,255,','rgba(255,215,0,','rgba(88,101,242,'];
-  const orbs=[];for(let i=0;i<7;i++)orbs.push({x:Math.random(),y:Math.random(),r:60+Math.random()*120,col:orbCols[Math.floor(Math.random()*orbCols.length)],vx:(Math.random()-.5)*.00015,vy:(Math.random()-.5)*.00015,a:.04+Math.random()*.05});
-  const pixCols=['#5D9E31','#7DC940','#FFD700','#47C96B','#C678FF','#fff','#5865F2'];
-  const pixels=[];function spawnPx(){return{x:Math.random(),y:1.05,size:3+Math.random()*5,col:pixCols[Math.floor(Math.random()*7)],vx:(Math.random()-.5)*.0004,vy:-(0.0004+Math.random()*.0008),a:0,maxA:.4+Math.random()*.35,rot:Math.random()*360,rotV:(Math.random()-.5)*1.2};}
-  for(let i=0;i<28;i++)pixels.push(spawnPx());
-  let shooters=[];setInterval(()=>shooters.push({x:Math.random()*.6,y:Math.random()*.4,len:80+Math.random()*140,speed:.006+Math.random()*.008,progress:0,a:.7+Math.random()*.3,angle:Math.PI/5+(Math.random()-.5)*.3}),3200);
-  let t=0;
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#06091A');g.addColorStop(.5,'#0A1628');g.addColorStop(1,'#0D2040');
-    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-    for(const o of orbs){o.x+=o.vx;o.y+=o.vy;if(o.x<-.1)o.x=1.1;if(o.x>1.1)o.x=-.1;if(o.y<-.1)o.y=1.1;if(o.y>1.1)o.y=-.1;
-      const rg=ctx.createRadialGradient(o.x*W,o.y*H,0,o.x*W,o.y*H,o.r);rg.addColorStop(0,o.col+o.a+')');rg.addColorStop(1,o.col+'0)');
-      ctx.fillStyle=rg;ctx.beginPath();ctx.arc(o.x*W,o.y*H,o.r,0,Math.PI*2);ctx.fill();}
-    for(const s of stars){const p=.4+.6*(.5+.5*Math.sin(t*s.speed+s.phase));ctx.globalAlpha=s.a*p;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(s.x*W,s.y*H,s.r*(.8+.3*p),0,Math.PI*2);ctx.fill();}ctx.globalAlpha=1;
-    shooters=shooters.filter(s=>s.progress<1.3);
-    for(const s of shooters){s.progress+=s.speed;
-      const sx=s.x*W+Math.cos(s.angle)*s.progress*s.len*3,sy=s.y*H+Math.sin(s.angle)*s.progress*s.len*3;
-      const ex=sx-Math.cos(s.angle)*s.len,ey=sy-Math.sin(s.angle)*s.len;
-      const fade=s.progress>.8?1-(s.progress-.8)/.5:1;
-      const lg=ctx.createLinearGradient(ex,ey,sx,sy);lg.addColorStop(0,'rgba(255,255,255,0)');lg.addColorStop(1,`rgba(255,255,255,${s.a*fade})`);
-      ctx.strokeStyle=lg;ctx.lineWidth=1.5;ctx.globalAlpha=fade;ctx.beginPath();ctx.moveTo(ex,ey);ctx.lineTo(sx,sy);ctx.stroke();ctx.globalAlpha=1;}
-    for(let i=0;i<pixels.length;i++){const p=pixels[i];p.x+=p.vx;p.y+=p.vy;p.rot+=p.rotV;p.a=Math.min(p.maxA,p.a+.008);if(p.y<-.05){pixels[i]=spawnPx();continue;}
-      ctx.save();ctx.translate(p.x*W,p.y*H);ctx.rotate(p.rot*Math.PI/180);ctx.globalAlpha=p.a;ctx.fillStyle=p.col;ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size);ctx.restore();}
-    ctx.globalAlpha=1;t+=.6;requestAnimationFrame(draw);
-  }
-  draw();
-})();
+    const themeBtn = document.getElementById('themeBtn');
+    const root = document.documentElement;
+    function setTheme(theme) {
+        root.setAttribute('data-theme', theme);
+        themeBtn.textContent = theme === 'dark' ? '🌙 Theme' : '☀️ Theme';
+        localStorage.setItem('nova_theme', theme);
+    }
+    themeBtn.addEventListener('click', () => {
+        const current = root.getAttribute('data-theme') || 'dark';
+        setTheme(current === 'dark' ? 'light' : 'dark');
+    });
+    const savedTheme = localStorage.getItem('nova_theme');
+    if (savedTheme === 'light' || savedTheme === 'dark') setTheme(savedTheme);
+    else setTheme('dark');
 </script>
-<!-- ══════════════════ MIA WIDGET JS (Turnstile captcha + spam lock + new chat) ══════════════════ -->
 <script>
-(function () {
-  const API_URL    = 'https://xameraman5022-mia-assistant.hf.space/chat';
-  const STATUS_URL = 'https://xameraman5022-mia-assistant.hf.space/status';
-  const SOURCE     = 'general'; // ← Guides hub uses general knowledge
+    (function() {
+        const API_URL = 'https://xameraman5022-nova-guides.hf.space/chat';
+        const STATUS_URL = 'https://xameraman5022-nova-guides.hf.space/status';
+        const SOURCE = 'guides-hub';
 
-  // ── Token ──
-  let token = localStorage.getItem('mia_token');
-  if (!token) { token = crypto.randomUUID(); localStorage.setItem('mia_token', token); }
+        let token = localStorage.getItem('nova_token');
+        if (!token) { token = crypto.randomUUID(); localStorage.setItem('nova_token', token); }
 
-  // ── Fingerprint ──
-  const fingerprint =
-    navigator.userAgent + "_" + screen.width + "x" + screen.height + "_" +
-    Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const fingerprint = navigator.userAgent + "_" + screen.width + "x" + screen.height + "_" + Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const HEADERS = { 'Content-Type': 'application/json', 'x-user-token': token, 'x-user-fp': fingerprint };
 
-  const HEADERS = {
-    'Content-Type': 'application/json',
-    'x-user-token': token,
-    'x-user-fp':    fingerprint
-  };
+        let captchaVerified = sessionStorage.getItem('nova_captcha') === 'yes';
+        let captchaToken = null;
 
-  // ── Captcha state ──
-  let captchaVerified = sessionStorage.getItem('mia_captcha') === 'yes';
-  let captchaToken    = null;
+        window.onCaptchaSuccess = function(cfToken) {
+            captchaToken = cfToken;
+            captchaVerified = true;
+            sessionStorage.setItem('nova_captcha', 'yes');
+            document.getElementById('nova-captcha-wrap').style.display = 'none';
+            document.getElementById('nova-input-row').style.display = 'flex';
+            const footer = document.getElementById('nova-footer-note');
+            if (footer) footer.textContent = 'NOVA AI • Powered by NOVA Official';
+            document.getElementById('nova-input').focus();
+        };
 
-  window.onCaptchaSuccess = function(cfToken) {
-    captchaToken    = cfToken;
-    captchaVerified = true;
-    sessionStorage.setItem('mia_captcha', 'yes');
-    const captchaWrap = document.getElementById('mia-captcha-wrap');
-    const inputRow    = document.getElementById('mia-input-row');
-    if (captchaWrap) captchaWrap.style.display = 'none';
-    if (inputRow)    inputRow.style.display    = 'flex';
-    const footer = document.getElementById('mia-footer-note');
-    if (footer) footer.textContent = 'MIA AI • Powered by MIA Official';
-    const input = document.getElementById('mia-input');
-    if (input) input.focus();
-  };
+        const BAD_WORDS = ["fuck","f*ck","fck","fuk","fuq","fvck","shit","sh1t","sh*t","sht","bitch","b*tch","btch","biatch","bastard","cunt","c*nt","dick","d*ck","cock","c*ck","pussy","p*ssy","piss","p*ss","whore","wh*re","slut","sl*t","retard","retarded","i will kill","i'll kill","gonna kill","i hate you","hate you","shut up","stfu","go die","kys","kill yourself","you suck","sucks ass","useless bot","stupid bot","dumb bot","garbage bot","trash bot","worst bot","useless ai","stupid ai","dumb ai","this is trash","this is garbage","you're trash","you're garbage","you're useless","you're stupid","you're dumb","you're an idiot","you are trash","you are garbage","you are useless","you are stupid","you are dumb","you are an idiot","nsfw","porn","pornography","xxx","nude","naked","hentai","lewd","explicit","erotic","onlyfans","fetish","gore","self harm","self-harm","suicide method","how to kill","how to make bomb"];
+        const MULTI_WORD_BAD = BAD_WORDS.filter(w => w.includes(" "));
+        const SINGLE_BAD = BAD_WORDS.filter(w => !w.includes(" "));
+        function isBadMessage(text) { const l = text.toLowerCase(); for (const p of MULTI_WORD_BAD) if (l.includes(p)) return true; const t = new Set(l.match(/[a-z0-9*]+/g) || []); const c = new Set(l.replace(/\s+/g, '').match(/[a-z0-9*]+/g) || []); for (const w of SINGLE_BAD) if (t.has(w) || c.has(w)) return true; return false; }
 
-  // ── Bad word list ──
-  const BAD_WORDS = [
-    "fuck","f*ck","fck","fuk","fuq","fvck",
-    "shit","sh1t","sh*t","sht",
-    "bitch","b*tch","btch","biatch",
-    "bastard","cunt","c*nt",
-    "dick","d*ck","cock","c*ck",
-    "pussy","p*ssy","piss","p*ss",
-    "whore","wh*re","slut","sl*t",
-    "retard","retarded",
-    "i will kill","i'll kill","gonna kill",
-    "i hate you","hate you",
-    "shut up","stfu",
-    "go die","kys","kill yourself",
-    "you suck","sucks ass",
-    "useless bot","stupid bot","dumb bot",
-    "garbage bot","trash bot","worst bot",
-    "useless ai","stupid ai","dumb ai",
-    "this is trash","this is garbage",
-    "you're trash","you're garbage","you're useless",
-    "you're stupid","you're dumb","you're an idiot",
-    "you are trash","you are garbage","you are useless",
-    "you are stupid","you are dumb","you are an idiot",
-    "nsfw","porn","pornography","xxx","nude","naked",
-    "hentai","lewd","explicit","erotic","onlyfans","fetish",
-    "gore","self harm","self-harm",
-    "suicide method","how to kill","how to make bomb",
-  ];
-  const MULTI_WORD_BAD = BAD_WORDS.filter(w => w.includes(" "));
-  const SINGLE_BAD     = BAD_WORDS.filter(w => !w.includes(" "));
+        const REPEAT_WINDOW = 5, REPEAT_LOCK_AT = 3, SHORT_LOCK_AT = 2, REPEAT_TIME_WIN = 60000;
+        let msgHistory = [], shortWarnShown = false;
+        function normMsg(t) { return t.toLowerCase().trim().replace(/\s+/g, ' '); }
+        function simil(a, b) { if (!a || !b) return 0; const L = Math.max(a.length, b.length), S = Math.min(a.length, b.length); if (!L) return 1; let m = 0; for (let i = 0; i < S; i++) if (a[i] === b[i]) m++; return m / L; }
+        function checkRepetitive(text) { const n = normMsg(text), now = Date.now(); msgHistory = msgHistory.filter(e => now - e.t <= REPEAT_TIME_WIN); if (n.length <= 2) { const sc = msgHistory.filter(e => e.m === n).length; if (sc >= SHORT_LOCK_AT) return { lock: true, reason: 'short' }; if (!shortWarnShown) { shortWarnShown = true; return { lock: false, warn: true }; } } const ec = msgHistory.filter(e => e.m === n).length; if (ec >= REPEAT_LOCK_AT - 1) return { lock: true, reason: 'exact' }; const sc = msgHistory.filter(e => simil(n, e.m) >= 0.85 && n !== e.m).length; if (sc >= 2) return { lock: true, reason: 'similar' }; msgHistory.push({ m: n, t: Date.now() }); if (msgHistory.length > REPEAT_WINDOW) msgHistory = msgHistory.slice(-REPEAT_WINDOW); return { lock: false }; }
 
-  function isBadMessage(text) {
-    const lowered = text.toLowerCase();
-    for (const p of MULTI_WORD_BAD) { if (lowered.includes(p)) return true; }
-    const tokens    = new Set(lowered.match(/[a-z0-9*]+/g) || []);
-    const collapsed = new Set(lowered.replace(/\s+/g,'').match(/[a-z0-9*]+/g) || []);
-    for (const w of SINGLE_BAD) { if (tokens.has(w) || collapsed.has(w)) return true; }
-    return false;
-  }
+        let history = [], isOpen = false, isLoading = false, chatLocked = false, countdownInt = null;
+        const btn = document.getElementById('nova-widget-btn'), panel = document.getElementById('nova-widget-panel'), msgs = document.getElementById('nova-messages'), input = document.getElementById('nova-input'), sendBtn = document.getElementById('nova-send'), footer = document.getElementById('nova-footer-note');
 
-  // ── Repetition tracking ──
-  const REPEAT_WINDOW   = 5;
-  const REPEAT_LOCK_AT  = 3;
-  const SHORT_LOCK_AT   = 2;
-  const REPEAT_TIME_WIN = 60000;
-  let msgHistory     = [];
-  let shortWarnShown = false;
-  function normMsg(t) { return t.toLowerCase().trim().replace(/\s+/g,' '); }
-  function simil(a,b) {
-    if(!a||!b) return 0;
-    const L=Math.max(a.length,b.length), S=Math.min(a.length,b.length);
-    if(!L) return 1;
-    let m=0; for(let i=0;i<S;i++) if(a[i]===b[i]) m++;
-    return m/L;
-  }
-  function checkRepetitive(text) {
-    const norm=normMsg(text), now=Date.now();
-    msgHistory = msgHistory.filter(e=>now-e.t<=REPEAT_TIME_WIN);
-    if(norm.length<=2){
-      const sc=msgHistory.filter(e=>e.m===norm).length;
-      if(sc>=SHORT_LOCK_AT) return {lock:true,reason:'short'};
-      if(!shortWarnShown){shortWarnShown=true;return{lock:false,warn:true};}
-    }
-    const ec=msgHistory.filter(e=>e.m===norm).length;
-    if(ec>=REPEAT_LOCK_AT-1) return {lock:true,reason:'exact'};
-    const sc=msgHistory.filter(e=>simil(norm,e.m)>=0.85&&norm!==e.m).length;
-    if(sc>=2) return {lock:true,reason:'similar'};
-    msgHistory.push({m:norm,t:Date.now()});
-    if(msgHistory.length>REPEAT_WINDOW) msgHistory=msgHistory.slice(-REPEAT_WINDOW);
-    return {lock:false};
-  }
+        function updateCaptchaState() { const cw = document.getElementById('nova-captcha-wrap'), ir = document.getElementById('nova-input-row'); if (captchaVerified) { if (cw) cw.style.display = 'none'; if (ir) ir.style.display = 'flex'; } else { if (cw) cw.style.display = 'block'; if (ir) ir.style.display = 'none'; if (footer) footer.textContent = '🔒 Verify to start chatting'; } }
+        let slowBanner = null;
+        function showSlowBanner(s) { if (slowBanner) return; slowBanner = document.createElement('div'); slowBanner.style.cssText = 'background:rgba(251,191,36,0.12);border-bottom:1px solid rgba(251,191,36,0.3);color:#fbbf24;font-size:11px;font-weight:700;text-align:center;padding:6px 10px;flex-shrink:0;'; slowBanner.textContent = `🛡️ High load detected — slow mode active (${s}s)`; panel.insertBefore(slowBanner, msgs); }
+        function hideSlowBanner() { if (slowBanner) { slowBanner.remove(); slowBanner = null; } }
 
-  // ── State ──
-  let history      = [];
-  let isOpen       = false;
-  let isLoading    = false;
-  let chatLocked   = false;
-  let countdownInt = null;
+        const header = document.getElementById('nova-panel-header');
+        if (header) { const nc = document.createElement('button'); nc.title = 'New conversation'; nc.textContent = '🔄'; nc.style.cssText = 'background:none;border:none;cursor:pointer;font-size:16px;opacity:0.45;transition:opacity .2s;padding:2px 4px;margin-left:auto;flex-shrink:0;'; nc.onmouseover = () => nc.style.opacity = '1'; nc.onmouseout = () => nc.style.opacity = '0.45'; nc.addEventListener('click', resetChat); const dot = document.getElementById('nova-online-dot'); if (dot) header.insertBefore(nc, dot); else header.appendChild(nc); }
 
-  const btn     = document.getElementById('mia-widget-btn');
-  const panel   = document.getElementById('mia-widget-panel');
-  const msgs    = document.getElementById('mia-messages');
-  const input   = document.getElementById('mia-input');
-  const sendBtn = document.getElementById('mia-send');
-  const footer  = document.getElementById('mia-footer-note');
+        function startCountdown(s) { clearInterval(countdownInt); let r = s; function tick() { if (r <= 0) { clearInterval(countdownInt); checkStatusOnLoad(); return; } const m = Math.floor(r / 60), sec = r % 60; if (footer) footer.textContent = m > 0 ? `⏳ Locked ${m}m ${sec}s` : `⏳ Locked ${sec}s`; r--; } tick(); countdownInt = setInterval(tick, 1000); }
+        function lockChat(msg, unlockIn) { clearInterval(countdownInt); chatLocked = true; input.disabled = true; sendBtn.disabled = true; input.placeholder = '⛔ Locked. Wait for timer.'; addMessage('bot', msg); if (unlockIn > 0) startCountdown(unlockIn); else if (footer) footer.textContent = '⚠️ Locked · Refresh to unlock'; }
+        function unlockChat() { clearInterval(countdownInt); chatLocked = false; input.disabled = false; sendBtn.disabled = false; input.placeholder = 'Ask me anything...'; hideSlowBanner(); if (footer) footer.textContent = 'NOVA AI • Powered by NOVA Official'; addMessage('bot', '✅ Lock lifted! You can send messages again. Please keep it respectful. 😊'); }
+        function resetChat() { if (isLoading) return; clearInterval(countdownInt); history = []; msgHistory = []; shortWarnShown = false; chatLocked = false; input.disabled = false; sendBtn.disabled = false; input.placeholder = 'Ask me anything...'; hideSlowBanner(); if (footer) footer.textContent = 'NOVA AI • Powered by NOVA Official'; msgs.innerHTML = ''; addMessage('bot', '🔄 Chat cleared! Hey! 👋 I\'m <strong>NOVA Assistant</strong>. Ask me anything — I\'m here to help!'); captchaVerified = false; captchaToken = null; sessionStorage.removeItem('nova_captcha'); updateCaptchaState(); if (window.turnstile) window.turnstile.reset(); }
 
-  // ── Show/hide captcha vs input ──
-  function updateCaptchaState() {
-    const captchaWrap = document.getElementById('mia-captcha-wrap');
-    const inputRow    = document.getElementById('mia-input-row');
-    if (captchaVerified) {
-      if (captchaWrap) captchaWrap.style.display = 'none';
-      if (inputRow)    inputRow.style.display    = 'flex';
-    } else {
-      if (captchaWrap) captchaWrap.style.display = 'block';
-      if (inputRow)    inputRow.style.display    = 'none';
-      if (footer)      footer.textContent        = '🔒 Verify to start chatting';
-    }
-  }
+        async function checkStatusOnLoad() { try { const res = await fetch(STATUS_URL, { headers: HEADERS }); if (!res.ok) return; const data = await res.json(); if (data.slow_mode && data.slow_until > 0) showSlowBanner(data.slow_until); else hideSlowBanner(); if (data.locked && data.unlock_in > 0) { chatLocked = true; input.disabled = true; sendBtn.disabled = true; input.placeholder = '⛔ Locked. Wait for timer.'; startCountdown(data.unlock_in); if (isOpen) addMessage('bot', `⛔ You are still locked — ${data.unlock_in}s remaining. Refreshing won't bypass this.`); } else if (chatLocked && !data.locked) unlockChat(); } catch (e) {} }
+        updateCaptchaState(); checkStatusOnLoad();
 
-  // ── Global slow mode banner ──
-  let slowBanner = null;
-  function showSlowBanner(seconds) {
-    if (slowBanner) return;
-    slowBanner = document.createElement('div');
-    slowBanner.style.cssText = `
-      background:rgba(251,191,36,0.12);border-bottom:1px solid rgba(251,191,36,0.3);
-      color:#fbbf24;font-size:11px;font-weight:700;text-align:center;
-      padding:6px 10px;flex-shrink:0;
-    `;
-    slowBanner.textContent = `🛡️ High load detected — slow mode active (${seconds}s)`;
-    panel.insertBefore(slowBanner, msgs);
-  }
-  function hideSlowBanner() {
-    if (slowBanner) { slowBanner.remove(); slowBanner = null; }
-  }
+        btn.addEventListener('click', () => { isOpen = !isOpen; panel.classList.toggle('nova-open', isOpen); btn.textContent = isOpen ? '✕' : '🤖'; if (isOpen) { scrollToBottom(); checkStatusOnLoad(); updateCaptchaState(); } });
+        input.addEventListener('input', () => { input.style.height = 'auto'; input.style.height = Math.min(input.scrollHeight, 80) + 'px'; });
+        input.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
+        sendBtn.addEventListener('click', sendMessage);
 
-  // ── New Chat button ──
-  const header = document.getElementById('mia-panel-header');
-  if (header) {
-    const newChatBtn = document.createElement('button');
-    newChatBtn.title = 'New conversation';
-    newChatBtn.textContent = '🔄';
-    newChatBtn.style.cssText = `background:none;border:none;cursor:pointer;font-size:16px;
-      opacity:0.45;transition:opacity .2s;padding:2px 4px;margin-left:auto;flex-shrink:0;`;
-    newChatBtn.onmouseover = ()=>newChatBtn.style.opacity='1';
-    newChatBtn.onmouseout  = ()=>newChatBtn.style.opacity='0.45';
-    newChatBtn.addEventListener('click', resetChat);
-    const dot = document.getElementById('mia-online-dot');
-    if(dot) header.insertBefore(newChatBtn,dot); else header.appendChild(newChatBtn);
-  }
+        async function sendMessage() {
+            if (chatLocked) return;
+            if (!captchaVerified) { updateCaptchaState(); return; }
+            const text = input.value.trim();
+            if (!text || isLoading) return;
+            if (text.length > 600) { lockChat('⛔ <strong>Chat locked</strong> — message too long. Keep under 600 chars. 🔄', 15); return; }
+            if (isBadMessage(text)) { lockChat('⛔ <strong>Chat locked</strong> — swearing, NSFW, and rude behavior are not allowed. 🔄', 15); return; }
+            const rep = checkRepetitive(text);
+            if (rep.warn) { addMessage('bot', '💡 Please ask a proper question! Very short messages may be limited. 😊'); input.value = ''; input.style.height = 'auto'; return; }
+            if (rep.lock) { lockChat(rep.reason === 'short' ? '⛔ <strong>Chat locked</strong> — please type real questions. 🔄' : '⛔ <strong>Chat locked</strong> — stop repeating the same message. 🔄', 15); return; }
 
-  // ── Countdown ──
-  function startCountdown(seconds) {
-    clearInterval(countdownInt);
-    let rem = seconds;
-    function tick() {
-      if(rem<=0){
-        clearInterval(countdownInt);
-        checkStatusOnLoad();
-        return;
-      }
-      const m=Math.floor(rem/60), s=rem%60;
-      if(footer) footer.textContent = m>0 ? `⏳ Locked ${m}m ${s}s` : `⏳ Locked ${s}s`;
-      rem--;
-    }
-    tick();
-    countdownInt = setInterval(tick,1000);
-  }
-
-  function lockChat(message, unlockIn) {
-    clearInterval(countdownInt);
-    chatLocked=true; input.disabled=true; sendBtn.disabled=true;
-    input.placeholder='⛔ Locked. Wait for timer.';
-    addMessage('bot', message);
-    if(unlockIn>0) startCountdown(unlockIn);
-    else if(footer) footer.textContent='⚠️ Locked · Refresh to unlock';
-  }
-
-  function unlockChat() {
-    clearInterval(countdownInt);
-    chatLocked=false; input.disabled=false; sendBtn.disabled=false;
-    input.placeholder='Ask me anything...';
-    hideSlowBanner();
-    if(footer) footer.textContent='MIA AI • Powered by MIA Official';
-    addMessage('bot','✅ Lock lifted! You can send messages again. Please keep it respectful. 😊');
-  }
-
-  function resetChat() {
-    if(isLoading) return;
-    clearInterval(countdownInt);
-    history=[]; msgHistory=[]; shortWarnShown=false; chatLocked=false;
-    input.disabled=false; sendBtn.disabled=false;
-    input.placeholder='Ask me anything...';
-    hideSlowBanner();
-    if(footer) footer.textContent='MIA AI • Powered by MIA Official';
-    msgs.innerHTML='';
-    addMessage('bot','🔄 Chat cleared! Hey! 👋 I\'m <strong>MIA Assistant</strong>. Ask me anything — I\'m here to help!');
-    // Reset captcha on new chat
-    captchaVerified = false;
-    captchaToken    = null;
-    sessionStorage.removeItem('mia_captcha');
-    updateCaptchaState();
-    if(window.turnstile) window.turnstile.reset();
-  }
-
-  // ── Check server status on load ──
-  async function checkStatusOnLoad() {
-    try {
-      const res = await fetch(STATUS_URL, {headers: HEADERS});
-      if(!res.ok) return;
-      const data = await res.json();
-
-      if(data.slow_mode && data.slow_until>0) {
-        showSlowBanner(data.slow_until);
-      } else {
-        hideSlowBanner();
-      }
-
-      if(data.locked && data.unlock_in>0) {
-        chatLocked=true; input.disabled=true; sendBtn.disabled=true;
-        input.placeholder='⛔ Locked. Wait for timer.';
-        startCountdown(data.unlock_in);
-        if(isOpen) {
-          addMessage('bot',`⛔ You are still locked — ${data.unlock_in}s remaining. Refreshing won't bypass this.`);
+            addMessage('user', text); history.push({ role: 'user', content: text }); input.value = ''; input.style.height = 'auto';
+            const typing = addTyping(); setLoading(true);
+            try {
+                const res = await fetch(API_URL, { method: 'POST', headers: HEADERS, body: JSON.stringify({ message: text, history: history.slice(0, -1), source: SOURCE, captcha_token: captchaToken || '' }) });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+                if (data.captcha) { typing.remove(); captchaVerified = false; captchaToken = null; sessionStorage.removeItem('nova_captcha'); updateCaptchaState(); if (window.turnstile) window.turnstile.reset(); addMessage('bot', '⛔ Human verification failed. Please verify again.'); setLoading(false); return; }
+                if (data.locked) { typing.remove(); lockChat(data.response || '⛔ You have been locked. Please wait.', data.unlock_in || 15); setLoading(false); return; }
+                if (data.slow_mode) { typing.remove(); showSlowBanner(data.unlock_in || 60); addMessage('bot', data.response || '🛡️ NOVA is under high load. Please wait.'); setLoading(false); return; }
+                if (data.spam) { typing.remove(); lockChat(data.response || '⛔ Chat locked. Refresh to unlock.', 0); setLoading(false); return; }
+                const reply = data.response || 'Sorry, no response. Please try again.';
+                history.push({ role: 'assistant', content: reply }); typing.remove(); addMessage('bot', reply);
+            } catch (err) { typing.remove(); addMessage('bot', '⚠️ Something went wrong. Please try again in a moment.'); console.error('[NOVA Widget]', err); }
+            finally { setLoading(false); input.focus(); }
         }
-      } else if(chatLocked && !data.locked) {
-        unlockChat();
-      }
-    } catch(e) { /* silent */ }
-  }
 
-  updateCaptchaState();
-  checkStatusOnLoad();
-
-  btn.addEventListener('click', ()=>{
-    isOpen=!isOpen;
-    panel.classList.toggle('mia-open',isOpen);
-    btn.textContent=isOpen?'✕':'🤖';
-    if(isOpen){ scrollToBottom(); checkStatusOnLoad(); updateCaptchaState(); }
-  });
-
-  input.addEventListener('input', ()=>{
-    input.style.height='auto';
-    input.style.height=Math.min(input.scrollHeight,80)+'px';
-  });
-
-  input.addEventListener('keydown',(e)=>{
-    if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}
-  });
-  sendBtn.addEventListener('click',sendMessage);
-
-  async function sendMessage() {
-    if(chatLocked) return;
-    if(!captchaVerified){ updateCaptchaState(); return; }
-    const text=input.value.trim();
-    if(!text||isLoading) return;
-
-    if(text.length>600){
-      lockChat('⛔ <strong>Chat locked</strong> — message too long. Keep under 600 chars. 🔄',15);
-      return;
-    }
-    if(isBadMessage(text)){
-      lockChat('⛔ <strong>Chat locked</strong> — swearing, NSFW, and rude behavior are not allowed. 🔄',15);
-      return;
-    }
-    const rep=checkRepetitive(text);
-    if(rep.warn){
-      addMessage('bot','💡 Please ask a proper question! Very short messages may be limited. 😊');
-      input.value=''; input.style.height='auto'; return;
-    }
-    if(rep.lock){
-      lockChat(
-        rep.reason==='short'
-          ? '⛔ <strong>Chat locked</strong> — please type real questions. 🔄'
-          : '⛔ <strong>Chat locked</strong> — stop repeating the same message. 🔄',
-        15
-      );
-      return;
-    }
-
-    addMessage('user',text);
-    history.push({role:'user',content:text});
-    input.value=''; input.style.height='auto';
-
-    const typing=addTyping();
-    setLoading(true);
-
-    try {
-      const res = await fetch(API_URL,{
-        method:'POST', headers:HEADERS,
-        body:JSON.stringify({
-          message:       text,
-          history:       history.slice(0,-1),
-          source:        SOURCE,
-          captcha_token: captchaToken || ''
-        })
-      });
-      if(!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data=await res.json();
-
-      // Server-side captcha rejection
-      if(data.captcha){
-        typing.remove();
-        captchaVerified = false;
-        captchaToken    = null;
-        sessionStorage.removeItem('mia_captcha');
-        updateCaptchaState();
-        if(window.turnstile) window.turnstile.reset();
-        addMessage('bot','⛔ Human verification failed. Please verify again.');
-        setLoading(false); return;
-      }
-
-      if(data.locked){
-        typing.remove();
-        lockChat(data.response||'⛔ You have been locked. Please wait.',data.unlock_in||15);
-        setLoading(false); return;
-      }
-      if(data.slow_mode){
-        typing.remove();
-        showSlowBanner(data.unlock_in||60);
-        addMessage('bot',data.response||'🛡️ MIA is under high load. Please wait.');
-        setLoading(false); return;
-      }
-      if(data.spam){
-        typing.remove();
-        lockChat(data.response||'⛔ Chat locked. Refresh to unlock.',0);
-        setLoading(false); return;
-      }
-
-      const reply=data.response||'Sorry, no response. Please try again.';
-      history.push({role:'assistant',content:reply});
-      typing.remove();
-      addMessage('bot',reply);
-
-    } catch(err){
-      typing.remove();
-      addMessage('bot','⚠️ Something went wrong. Please try again in a moment.');
-      console.error('[MIA Widget]',err);
-    } finally {
-      setLoading(false); input.focus();
-    }
-  }
-
-  function addMessage(role,text){
-    const div=document.createElement('div');
-    div.className=`mia-msg ${role}`;
-    div.innerHTML=text
-      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-      .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
-      .replace(/\*(.*?)\*/g,'<em>$1</em>')
-      .replace(/`(.*?)`/g,'<code>$1</code>')
-      .replace(/\n/g,'<br>');
-    msgs.appendChild(div);
-    scrollToBottom();
-    return div;
-  }
-
-  function addTyping(){
-    const div=document.createElement('div');
-    div.className='mia-typing';
-    div.innerHTML='<div class="mia-dot"></div><div class="mia-dot"></div><div class="mia-dot"></div>';
-    msgs.appendChild(div);
-    scrollToBottom();
-    return div;
-  }
-
-  function scrollToBottom(){msgs.scrollTop=msgs.scrollHeight;}
-  function setLoading(s){isLoading=s;input.disabled=s;sendBtn.disabled=s;}
-})();
+        function addMessage(role, text) { const div = document.createElement('div'); div.className = `nova-msg ${role}`; div.innerHTML = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>').replace(/`(.*?)`/g, '<code>$1</code>').replace(/\n/g, '<br>'); msgs.appendChild(div); scrollToBottom(); return div; }
+        function addTyping() { const div = document.createElement('div'); div.className = 'nova-typing'; div.innerHTML = '<div class="nova-dot"></div><div class="nova-dot"></div><div class="nova-dot"></div>'; msgs.appendChild(div); scrollToBottom(); return div; }
+        function scrollToBottom() { msgs.scrollTop = msgs.scrollHeight; }
+        function setLoading(s) { isLoading = s; input.disabled = s; sendBtn.disabled = s; }
+    })();
 </script>
-<!-- Discord Live Widget (icon + left-of-center) -->
 <script>
-(async function() {
-  try {
-    const res = await fetch('https://discord.com/api/guilds/1402293305785581721/widget.json');
-    if (!res.ok) return;
-    const data = await res.json();
-    const count = data.presence_count;
-
-    const badge = document.createElement('a');
-    badge.href = 'https://discord.gg/tS5WmGEyxN';
-    badge.target = '_blank';
-    badge.rel = 'noopener';
-    badge.style.cssText = `
-      position:fixed; bottom:18px; left:50%; z-index:99998;
-      background:linear-gradient(135deg,#5865F2,#4752C4); color:#fff;
-      padding:6px 12px; border-radius:20px; font-size:11px;
-      font-family:'Nunito',sans-serif; font-weight:700;
-      box-shadow:0 3px 10px rgba(88,101,242,0.45);
-      text-decoration:none; display:flex; align-items:center; gap:6px;
-      transition:transform .2s, box-shadow .2s;
-      cursor:pointer;
-      transform:translateX(-60%);
-      white-space:nowrap;
-    `;
-
-    // MIA icon (using the same image as the page – change if needed)
-    const icon = document.createElement('img');
-    icon.src = 'mia-logo.jpg'; // or mia-logo.jpg – use what's in your page
-    icon.style.cssText = `
-      width:18px; height:18px; border-radius:4px;
-      object-fit:cover; flex-shrink:0;
-      box-shadow:0 0 4px rgba(255,255,255,0.3);
-    `;
-
-    badge.appendChild(icon);
-    badge.appendChild(document.createTextNode(`🟢 ${count} online · Press to join MIA`));
-
-    badge.onmouseover = ()=> {
-      badge.style.transform = 'translateX(-60%) scale(1.05)';
-      badge.style.boxShadow = '0 5px 16px rgba(88,101,242,0.7)';
-    };
-    badge.onmouseout  = ()=> {
-      badge.style.transform = 'translateX(-60%) scale(1)';
-      badge.style.boxShadow = '0 3px 10px rgba(88,101,242,0.45)';
-    };
-
-    document.body.appendChild(badge);
-  } catch(e) { /* silently ignore */ }
-})();
+    (async function() {
+        try {
+            const res = await fetch('https://discord.com/api/guilds/1402293305785581721/widget.json');
+            if (!res.ok) return;
+            const data = await res.json();
+            const count = data.presence_count;
+            const badge = document.createElement('a');
+            badge.id = 'discord-live-badge';
+            badge.href = 'https://discord.gg/ThgxvPtUjZ';
+            badge.target = '_blank';
+            badge.rel = 'noopener';
+            badge.style.cssText = 'position:fixed;bottom:22px;left:50%;z-index:61;transform:translateX(-50%);background:linear-gradient(135deg,#5865F2,#4752C4);color:#fff;padding:8px 16px;border-radius:24px;font-size:.78rem;font-weight:700;box-shadow:0 4px 18px rgba(88,101,242,.45);text-decoration:none;display:flex;align-items:center;gap:7px;transition:transform .2s,box-shadow .2s;white-space:nowrap;font-family:inherit;';
+            const icon = document.createElement('img');
+            icon.src = 'https://i.ibb.co/cK60Sp0h/b41e6534d3e9.png';
+            icon.style.cssText = 'width:20px;height:20px;border-radius:5px;object-fit:cover;flex-shrink:0;box-shadow:0 0 6px rgba(255,255,255,.3);';
+            badge.appendChild(icon);
+            badge.appendChild(document.createTextNode('🟢 ' + count + ' online · Join NOVA'));
+            badge.onmouseover = () => { badge.style.transform = 'translateX(-50%) scale(1.05)'; badge.style.boxShadow = '0 6px 24px rgba(88,101,242,.7)'; };
+            badge.onmouseout = () => { badge.style.transform = 'translateX(-50%) scale(1)'; badge.style.boxShadow = '0 4px 18px rgba(88,101,242,.45)'; };
+            document.body.appendChild(badge);
+        } catch (e) {}
+    })();
 </script>
 </body>
 </html>
